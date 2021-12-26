@@ -47,9 +47,9 @@ void main() {
           BlocProvider<GameConfigBloc>(
             create: (context) => GameConfigBloc(),
           ),
-          BlocProvider<ClassicQuizBloc>(
-            create: (context) => ClassicQuizBloc(),
-          )
+          // BlocProvider<ClassicQuizBloc>(
+          //   create: (context) => ClassicQuizBloc(),
+          // )
         ],
         child: MaterialApp(
           theme: ThemeData(
@@ -71,7 +71,10 @@ void main() {
             '/screen_11': (context) => const Screen11(),
             '/screen_12': (context) => const Screen12(),
             '/screen_17': (context) => const Screen17(),
-            '/screen_18': (context) => const Screen18(),
+            '/screen_18': (context) => BlocProvider<ClassicQuizBloc>(
+                  create: (context) => ClassicQuizBloc(),
+                  child: const Screen18(),
+                ),
           },
         ),
       ),
