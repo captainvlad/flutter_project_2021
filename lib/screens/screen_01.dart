@@ -1,0 +1,126 @@
+import 'package:flutter/material.dart';
+import 'package:sequel/res/values/colors.dart';
+import 'package:sequel/res/values/strings.dart';
+import 'package:sequel/managers/ui_manager.dart';
+
+class Screen01 extends StatelessWidget {
+  const Screen01({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    UiManager uiManager = UiManager(context);
+
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: uiManager.blockSizeVertical * 2,
+            ),
+            UiManager.getText(
+              text: title,
+              size: uiManager.blockSizeVertical * 6,
+              strokeWidth: uiManager.blockSizeVertical * 1,
+              fillColor: yellowColor,
+              strokeColor: whiteColor,
+            ),
+            SizedBox(
+              height: uiManager.blockSizeVertical * 2,
+            ),
+            Image.asset(
+              'assets/images/image_1.png',
+              width: uiManager.blockSizeHorizontal * 90,
+            ),
+            SizedBox(
+              height: uiManager.blockSizeVertical * 2,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                UiManager.getButton(
+                  label: UiManager.getText(
+                    text: button_1,
+                    size: uiManager.blockSizeVertical * 2.5,
+                    strokeWidth: uiManager.blockSizeVertical * 1,
+                    fillColor: whiteColor,
+                    strokeColor: blueColor,
+                  ),
+                  width: uiManager.blockSizeHorizontal * 40,
+                  height: uiManager.blockSizeVertical * 6,
+                  color: yellowColor,
+                  cornerRaidus: 10.0,
+                  onTap: () {
+                    Navigator.pushNamed(context, '/screen_02');
+                  },
+                ),
+                SizedBox(
+                  width: uiManager.blockSizeVertical * 2,
+                ),
+                UiManager.getButton(
+                  label: UiManager.getText(
+                    text: button_2,
+                    size: uiManager.blockSizeVertical * 2.5,
+                    strokeWidth: uiManager.blockSizeVertical * 1,
+                    fillColor: whiteColor,
+                    strokeColor: blueColor,
+                  ),
+                  width: uiManager.blockSizeHorizontal * 40,
+                  height: uiManager.blockSizeVertical * 6,
+                  color: yellowColor,
+                  cornerRaidus: 10.0,
+                  onTap: () {
+                    Navigator.pushNamed(context, '/screen_03');
+                  },
+                ),
+              ],
+            ),
+            SizedBox(
+              height: uiManager.blockSizeVertical * 2,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                UiManager.getButton(
+                  label: UiManager.getText(
+                    text: button_3,
+                    size: uiManager.blockSizeVertical * 2.5,
+                    strokeWidth: uiManager.blockSizeVertical * 1,
+                    fillColor: whiteColor,
+                    strokeColor: blueColor,
+                  ),
+                  width: uiManager.blockSizeHorizontal * 40,
+                  height: uiManager.blockSizeVertical * 6,
+                  color: yellowColor,
+                  cornerRaidus: 10.0,
+                  onTap: () {
+                    Navigator.pushNamed(context, '/screen_04');
+                  },
+                ),
+                SizedBox(
+                  width: uiManager.blockSizeVertical * 2,
+                ),
+                UiManager.getButton(
+                  label: UiManager.getText(
+                    text: button_4,
+                    size: uiManager.blockSizeVertical * 2.5,
+                    strokeWidth: uiManager.blockSizeVertical * 1,
+                    fillColor: whiteColor,
+                    strokeColor: blueColor,
+                  ),
+                  width: uiManager.blockSizeHorizontal * 40,
+                  height: uiManager.blockSizeVertical * 6,
+                  color: yellowColor,
+                  cornerRaidus: 10.0,
+                  onTap: () {
+                    Navigator.pushNamed(context, '/screen_05');
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
