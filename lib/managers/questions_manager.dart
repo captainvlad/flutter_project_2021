@@ -28,8 +28,14 @@ class QuestionsManager {
     directorPoster = DirectorQuestionModel();
   }
 
-  Future<Question> getQuestion(QuestionType type) async {
-    Map<String, dynamic> topFilms = await ApiManager().getTop250();
+  Future<Question> getQuestion(QuestionType type, String level) async {
+    Map<String, dynamic> topFilms;
+
+    if (level == 'Easy') {
+      topFilms = await ApiManager().getTop250();
+    } else {
+      topFilms = await ApiManager().getTop100();
+    }
 
     switch (type) {
       case QuestionType.directorByPosterQuestion:

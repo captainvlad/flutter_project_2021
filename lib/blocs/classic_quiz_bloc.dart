@@ -65,7 +65,7 @@ class QuizState extends Equatable {
     return QuestionType.topRatingQuestion;
   }
 
-  Future loadQuestionsFromApi(String type) async {
+  Future loadQuestionsFromApi(String type, String level) async {
     version++;
     questions = [];
 
@@ -73,6 +73,7 @@ class QuizState extends Equatable {
       for (int i = 0; i < questionsNumber; i++) {
         Question q = await questionApiManager.getQuestion(
           quizTypeToQuestionType(type),
+          level,
         );
         questions.add(q);
       }

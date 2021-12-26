@@ -42,6 +42,21 @@ class ApiManager {
     );
   }
 
+  Future<Map<String, dynamic>> getTop100() async {
+    Map<String, dynamic> result = {};
+    Map<String, dynamic> top250 = await getTop250();
+
+    for (String key in top250.keys) {
+      if (result.keys.length < 100) {
+        result[key] = top250[key];
+      } else {
+        break;
+      }
+    }
+
+    return result;
+  }
+
   Future<Map<String, dynamic>> getFilmImageById(String id) async {
     return _processRequest(
       'https://imdb-api.com/en/API/Images/$_apiKey/$id/Short',
