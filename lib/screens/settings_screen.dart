@@ -5,8 +5,8 @@ import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/managers/ui_manager.dart';
 
-class Screen02 extends StatelessWidget {
-  const Screen02({Key? key}) : super(key: key);
+class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +167,10 @@ class Screen02 extends StatelessWidget {
                         _gmBloc.state.gameType == button_5) {
                       Navigator.pushNamed(context, '/screen_17');
                     } else {
-                      Navigator.pushNamed(context, '/screen_18');
+                      Navigator.pushNamed(
+                        context,
+                        '/classic_quiz_question_screen',
+                      );
                     }
                   },
                 ),

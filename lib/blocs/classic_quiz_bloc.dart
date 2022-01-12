@@ -1,18 +1,28 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sequel/general_models/levels.dart';
-import 'package:sequel/general_models/question.dart';
-import 'package:sequel/general_models/questions_types.dart';
-import 'package:sequel/managers/questions_cache_manager.dart';
-import 'package:sequel/managers/questions_manager.dart';
+import 'package:equatable/equatable.dart';
 import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sequel/screens/remove_later.dart';
+import 'package:sequel/general_models/question.dart';
+import 'package:sequel/managers/questions_manager.dart';
+import 'package:sequel/general_models/questions_types.dart';
+import 'package:sequel/managers/questions_cache_manager.dart';
 
-enum QuizEvent {
-  prepare,
-  next,
+enum QuizStatus {
+  loadQuestions,
+  nextQuestion,
   checkQuestion,
+}
+
+class QuizEvent {
+  final QuizStatus status;
+  final Map<String, dynamic> arguments;
+
+  const QuizEvent({
+    required this.status,
+    this.arguments = const {},
+  });
 }
 
 class QuizState extends Equatable {
@@ -21,16 +31,16 @@ class QuizState extends Equatable {
   late Question currentQuestion;
   late int questionIndex;
   late int rightAnswers;
-  List<Color> answerColors = [
+  late List<Color> answerColors = [
     yellowColor,
     yellowColor,
     yellowColor,
     yellowColor
   ];
 
-  QuestionsManager questionApiManager = QuestionsManager();
-  QuestionsCacheManager questionDbManager = QuestionsCacheManager();
-  int questionsNumber = 20;
+  final QuestionsCacheManager questionDbManager = QuestionsCacheManager();
+  final QuestionsManager questionApiManager = QuestionsManager();
+  final int questionsNumber = 20;
 
   QuizState({
     this.version = 0,
@@ -125,47 +135,56 @@ class QuizState extends Equatable {
 class ClassicQuizBloc extends Bloc<QuizEvent, QuizState> {
   late String quizType;
   late String quizLevel;
-  String givenAnswer = "";
+  late DateTime dateTimeStart;
 
   ClassicQuizBloc() : super(QuizState());
 
   @override
   Stream<QuizState> mapEventToState(QuizEvent event) async* {
-    switch (event) {
-      case QuizEvent.prepare:
-        await state.loadQuestionsFromDb(quizType);
+    switch (event.status) {
+      case QuizStatus.loadQuestions:
+        NavigationService.navigatorKey.currentState!
+            .pushNamed("/loading_screen");
 
+        await state.loadQuestionsFromDb(quizType);
+        await Future.delayed(const Duration(seconds: 5));
+
+        NavigationService.navigatorKey.currentState!.pop();
+        dateTimeStart = DateTime.now();
         break;
-      case QuizEvent.next:
+      case QuizStatus.nextQuestion:
         if (state.questionIndex == state.questions.length - 1) {
-          yield QuizState(
-            questions: state.questions,
-            questionIndex: -1,
-            rightAnswers: state.rightAnswers,
-            currentQuestion: state.questions[state.questionIndex],
+          int minutesSpent = DateTime.now().difference(dateTimeStart).inMinutes;
+          NavigationService.navigatorKey.currentState!.pop();
+          NavigationService.navigatorKey.currentState!.pop();
+
+          NavigationService.navigatorKey.currentState!.pushNamed(
+            '/classic_end_screen',
+            arguments: {
+              "correct_answers": state.rightAnswers,
+              "all_answers": state.questions.length,
+              "accuracy":
+                  "${state.rightAnswers / state.questions.length * 100}%",
+              "total_time": "$minutesSpent min",
+            },
           );
         } else {
           state.nextQuestion();
         }
 
         break;
-      case QuizEvent.checkQuestion:
-        state.checkQuestion(givenAnswer);
-
+      case QuizStatus.checkQuestion:
         QuizState result = QuizState(
           questions: state.questions,
           questionIndex: state.questionIndex,
           rightAnswers: state.rightAnswers,
-          currentQuestion: state.questions[state.questionIndex],
+          currentQuestion: state.currentQuestion,
         );
 
-        result.answerColors = state.answerColors;
+        result.checkQuestion(event.arguments["answer"]);
+
         yield result;
-
-        await Future.delayed(const Duration(seconds: 2));
-        givenAnswer = "checked";
-
-        break;
+        await Future.delayed(const Duration(seconds: 1));
     }
 
     yield QuizState(

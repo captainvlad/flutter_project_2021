@@ -7,7 +7,7 @@ import 'package:sequel/managers/ui_manager.dart';
 import 'package:sequel/screens/screen_08.dart';
 import 'package:sequel/screens/screen_10.dart';
 import 'package:sequel/screens/screen_13.dart';
-import 'package:sequel/screens/screen_15.dart';
+import 'package:sequel/screens/loading_screen.dart';
 import 'package:sequel/screens/screen_16.dart';
 
 class Screen11 extends StatelessWidget {
@@ -29,9 +29,9 @@ class Screen11 extends StatelessWidget {
             switch (state.downloadResult) {
               case DownloadResult.raw:
                 _dBloc.add(DownloadEvent.updateQuestions);
-                return const Screen15();
+                return const LoadingScreen();
               case DownloadResult.progress:
-                return const Screen15();
+                return const LoadingScreen();
               case DownloadResult.success:
                 return Screen13(
                   title: success,

@@ -6,10 +6,10 @@ import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/managers/ui_manager.dart';
 
 class Screen07 extends StatelessWidget {
-  String achievementName;
+  final String achievementName;
 
-  Screen07({
-    this.achievementName = badcomedian,
+  const Screen07({
+    this.achievementName = "",
     Key? key,
   }) : super(key: key);
 

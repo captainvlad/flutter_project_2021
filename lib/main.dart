@@ -6,8 +6,10 @@ import 'package:sequel/blocs/download_bloc.dart';
 import 'package:sequel/blocs/game_config_bloc.dart';
 import 'package:sequel/blocs/settings_bloc.dart';
 import 'package:sequel/blocs/statistics_bloc.dart';
-import 'package:sequel/screens/screen_01.dart';
-import 'package:sequel/screens/screen_02.dart';
+import 'package:sequel/screens/classic_quiz_end_screen.dart';
+import 'package:sequel/screens/remove_later.dart';
+import 'package:sequel/screens/home_screen.dart';
+import 'package:sequel/screens/settings_screen.dart';
 import 'package:sequel/screens/screen_03.dart';
 import 'package:sequel/screens/screen_04.dart';
 import 'package:sequel/screens/screen_05.dart';
@@ -18,8 +20,10 @@ import 'package:sequel/screens/screen_09.dart';
 import 'package:sequel/screens/screen_10.dart';
 import 'package:sequel/screens/screen_11.dart';
 import 'package:sequel/screens/screen_12.dart';
+import 'package:sequel/screens/loading_screen.dart';
 import 'package:sequel/screens/screen_17.dart';
-import 'package:sequel/screens/screen_18.dart';
+import 'package:sequel/screens/classic_quiz_question_screen.dart';
+import 'package:sequel/screens/screen_animation_sample.dart';
 import 'res/values/colors.dart';
 
 void main() {
@@ -35,11 +39,11 @@ void main() {
     (value) => runApp(
       MultiBlocProvider(
         providers: [
-          BlocProvider<SettingsBloc>(
-            create: (context) => SettingsBloc(),
-          ),
           BlocProvider<DownloadBloc>(
             create: (context) => DownloadBloc(),
+          ),
+          BlocProvider<SettingsBloc>(
+            create: (context) => SettingsBloc(),
           ),
           BlocProvider<StatisticsBloc>(
             create: (context) => StatisticsBloc(),
@@ -47,19 +51,16 @@ void main() {
           BlocProvider<GameConfigBloc>(
             create: (context) => GameConfigBloc(),
           ),
-          // BlocProvider<ClassicQuizBloc>(
-          //   create: (context) => ClassicQuizBloc(),
-          // )
         ],
         child: MaterialApp(
           theme: ThemeData(
             scaffoldBackgroundColor: blueColor,
             fontFamily: 'Ultra',
           ),
-          initialRoute: '/screen_01',
+          navigatorKey: NavigationService.navigatorKey,
+          initialRoute: '/home_screen',
           routes: {
-            '/screen_01': (context) => const Screen01(),
-            '/screen_02': (context) => const Screen02(),
+            '/home_screen': (context) => const HomeScreen(),
             '/screen_03': (context) => const Screen03(),
             '/screen_04': (context) => const Screen04(),
             '/screen_05': (context) => const Screen05(),
@@ -70,14 +71,32 @@ void main() {
             '/screen_10': (context) => const Screen10(),
             '/screen_11': (context) => const Screen11(),
             '/screen_12': (context) => const Screen12(),
+            '/loading_screen': (context) => const LoadingScreen(),
             '/screen_17': (context) => const Screen17(),
-            '/screen_18': (context) => BlocProvider<ClassicQuizBloc>(
+            '/settings_screen': (context) => const SettingsScreen(),
+            '/classic_end_screen': (context) => const ClassicQuizEndScreen(),
+            '/classic_quiz_question_screen': (context) =>
+                BlocProvider<ClassicQuizBloc>(
                   create: (context) => ClassicQuizBloc(),
-                  child: const Screen18(),
+                  child: const ClassicQuizQuestionScreen(),
                 ),
           },
         ),
       ),
     ),
   );
+
+  //     (value) {
+  //   runApp(
+  //     MaterialApp(
+  //       home: Scaffold(
+  //         body: MyApp2(),
+  //       ),
+  //       navigatorKey: NavService.navigatorKey,
+  //       routes: {
+  //         '/home': (context) => const Screen01(),
+  //       },
+  //     ),
+  //   );
+  // });
 }

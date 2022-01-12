@@ -5,7 +5,7 @@ import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/managers/ui_manager.dart';
 import 'package:sequel/screens/screen_13.dart';
-import 'package:sequel/screens/screen_15.dart';
+import 'package:sequel/screens/loading_screen.dart';
 
 class Screen03 extends StatelessWidget {
   const Screen03({Key? key}) : super(key: key);
@@ -22,9 +22,9 @@ class Screen03 extends StatelessWidget {
             switch (state.status) {
               case StatisticsStatus.none:
                 _stBloc.add(StatisticsEvent.update);
-                return const Screen15();
+                return const LoadingScreen();
               case StatisticsStatus.progress:
-                return const Screen15();
+                return const LoadingScreen();
               case StatisticsStatus.failure:
                 return Screen13(
                   title: error,

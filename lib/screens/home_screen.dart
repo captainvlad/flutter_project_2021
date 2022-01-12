@@ -3,8 +3,8 @@ import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/managers/ui_manager.dart';
 
-class Screen01 extends StatelessWidget {
-  const Screen01({Key? key}) : super(key: key);
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,7 @@ class Screen01 extends StatelessWidget {
                   color: yellowColor,
                   cornerRaidus: 10.0,
                   onTap: () {
-                    Navigator.pushNamed(context, '/screen_02');
+                    Navigator.pushNamed(context, '/settings_screen');
                   },
                 ),
                 SizedBox(
