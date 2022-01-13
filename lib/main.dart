@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sequel/blocs/bullet_quiz_bloc.dart';
 import 'package:sequel/blocs/classic_quiz_bloc.dart';
 import 'package:sequel/blocs/download_bloc.dart';
 import 'package:sequel/blocs/game_config_bloc.dart';
 import 'package:sequel/blocs/settings_bloc.dart';
 import 'package:sequel/blocs/statistics_bloc.dart';
+import 'package:sequel/screens/bullet_quiz_question_screen.dart';
 import 'package:sequel/screens/classic_quiz_end_screen.dart';
-import 'package:sequel/screens/remove_later.dart';
+import 'package:sequel/managers/navigation_manager.dart';
 import 'package:sequel/screens/home_screen.dart';
 import 'package:sequel/screens/settings_screen.dart';
 import 'package:sequel/screens/screen_03.dart';
@@ -23,7 +25,7 @@ import 'package:sequel/screens/screen_12.dart';
 import 'package:sequel/screens/loading_screen.dart';
 import 'package:sequel/screens/screen_17.dart';
 import 'package:sequel/screens/classic_quiz_question_screen.dart';
-import 'package:sequel/screens/screen_animation_sample.dart';
+import 'package:sequel/screens/bullet_quiz_timer.dart';
 import 'res/values/colors.dart';
 
 void main() {
@@ -57,15 +59,16 @@ void main() {
             scaffoldBackgroundColor: blueColor,
             fontFamily: 'Ultra',
           ),
-          navigatorKey: NavigationService.navigatorKey,
-          initialRoute: '/home_screen',
+          navigatorKey: NavigationManager.navigatorKey,
+          // initialRoute: '/home_screen',
+          initialRoute: '/bullet_quiz_question_screen',
           routes: {
             '/home_screen': (context) => const HomeScreen(),
             '/screen_03': (context) => const Screen03(),
             '/screen_04': (context) => const Screen04(),
             '/screen_05': (context) => const Screen05(),
             '/screen_06': (context) => const Screen06(),
-            '/screen_07': (context) => Screen07(),
+            '/screen_07': (context) => const Screen07(),
             '/screen_08': (context) => const Screen08(),
             '/screen_09': (context) => const Screen09(),
             '/screen_10': (context) => const Screen10(),
@@ -79,6 +82,11 @@ void main() {
                 BlocProvider<ClassicQuizBloc>(
                   create: (context) => ClassicQuizBloc(),
                   child: const ClassicQuizQuestionScreen(),
+                ),
+            '/bullet_quiz_question_screen': (context) =>
+                BlocProvider<BulletQuizBloc>(
+                  create: (context) => BulletQuizBloc(),
+                  child: const BulletQuizQuestionScreen(),
                 ),
           },
         ),
