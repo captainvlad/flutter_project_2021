@@ -4,11 +4,11 @@ import 'package:sequel/blocs/statistics_bloc.dart';
 import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/managers/ui_manager.dart';
-import 'package:sequel/screens/screen_13.dart';
+import 'package:sequel/screens/greetings_screen.dart';
 import 'package:sequel/screens/loading_screen.dart';
 
-class Screen03 extends StatelessWidget {
-  const Screen03({Key? key}) : super(key: key);
+class StatsScreen extends StatelessWidget {
+  const StatsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class Screen03 extends StatelessWidget {
               case StatisticsStatus.progress:
                 return const LoadingScreen();
               case StatisticsStatus.failure:
-                return Screen13(
+                return const GreetingsScreen(
                   title: error,
                 );
               case StatisticsStatus.success:
@@ -218,7 +218,7 @@ class Screen03 extends StatelessWidget {
                   color: yellowColor,
                   cornerRaidus: 10.0,
                   onTap: () {
-                    Navigator.pushNamed(context, '/screen_06');
+                    Navigator.pushNamed(context, '/achievements_screen');
                   },
                 ),
                 SizedBox(

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:sequel/general_models/achievement.dart';
-import 'package:sequel/managers/achievements_manager.dart';
 import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/managers/ui_manager.dart';
+import 'package:sequel/general_models/achievement.dart';
 
-class Screen07 extends StatelessWidget {
+class DetailedAchievementScreen extends StatelessWidget {
   final String achievementName;
 
-  const Screen07({
+  const DetailedAchievementScreen({
     this.achievementName = "",
     Key? key,
   }) : super(key: key);

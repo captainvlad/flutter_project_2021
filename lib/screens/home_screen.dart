@@ -70,7 +70,7 @@ class HomeScreen extends StatelessWidget {
                   color: yellowColor,
                   cornerRaidus: 10.0,
                   onTap: () {
-                    Navigator.pushNamed(context, '/screen_03');
+                    Navigator.pushNamed(context, '/stats_screen');
                   },
                 ),
               ],
@@ -94,7 +94,7 @@ class HomeScreen extends StatelessWidget {
                   color: yellowColor,
                   cornerRaidus: 10.0,
                   onTap: () {
-                    Navigator.pushNamed(context, '/screen_04');
+                    Navigator.pushNamed(context, '/setting_screen');
                   },
                 ),
                 SizedBox(
@@ -113,7 +113,7 @@ class HomeScreen extends StatelessWidget {
                   color: yellowColor,
                   cornerRaidus: 10.0,
                   onTap: () {
-                    Navigator.pushNamed(context, '/screen_05');
+                    Navigator.pushNamed(context, '/about_app_screen');
                   },
                 ),
               ],

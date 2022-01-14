@@ -3,11 +3,12 @@ import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/managers/ui_manager.dart';
 
-class Screen12 extends StatelessWidget {
-  const Screen12({Key? key}) : super(key: key);
+class BulletQuizEndScreen extends StatelessWidget {
+  const BulletQuizEndScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final arguments = ModalRoute.of(context)!.settings.arguments as Map;
     UiManager uiManager = UiManager(context);
 
     return Scaffold(
@@ -20,43 +21,18 @@ class Screen12 extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 UiManager.getText(
-                  text: correct_total_answers,
-                  size: uiManager.blockSizeVertical * 3,
-                  strokeWidth: uiManager.blockSizeVertical * 0,
-                  fillColor: whiteColor,
-                  strokeColor: whiteColor,
-                ),
-                UiManager.getCard(
-                  label: UiManager.getText(
-                    text: "10/20",
-                    size: uiManager.blockSizeVertical * 3,
-                    strokeWidth: uiManager.blockSizeVertical * 1,
-                    fillColor: whiteColor,
-                    strokeColor: blueColor,
-                  ),
-                  width: uiManager.blockSizeHorizontal * 40,
-                  height: uiManager.blockSizeVertical * 5,
-                  color: yellowColor,
-                  cornerRaidus: 10,
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                UiManager.getText(
-                  text: accuracy,
+                  text: total_answers,
                   size: uiManager.blockSizeVertical * 3,
                   strokeWidth: uiManager.blockSizeVertical * 0,
                   fillColor: whiteColor,
                   strokeColor: whiteColor,
                 ),
                 SizedBox(
-                  width: uiManager.blockSizeHorizontal * 15,
+                  width: uiManager.blockSizeHorizontal * 18,
                 ),
                 UiManager.getCard(
                   label: UiManager.getText(
-                    text: "80%",
+                    text: arguments["all_answers"],
                     size: uiManager.blockSizeVertical * 3,
                     strokeWidth: uiManager.blockSizeVertical * 1,
                     fillColor: whiteColor,
@@ -76,18 +52,49 @@ class Screen12 extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 UiManager.getText(
-                  text: total_time,
+                  text: right_answers,
                   size: uiManager.blockSizeVertical * 3,
                   strokeWidth: uiManager.blockSizeVertical * 0,
                   fillColor: whiteColor,
                   strokeColor: whiteColor,
                 ),
                 SizedBox(
-                  width: uiManager.blockSizeHorizontal * 10,
+                  width: uiManager.blockSizeHorizontal * 28,
                 ),
                 UiManager.getCard(
                   label: UiManager.getText(
-                    text: "0m 0s",
+                    text: arguments["correct_answers"],
+                    size: uiManager.blockSizeVertical * 3,
+                    strokeWidth: uiManager.blockSizeVertical * 1,
+                    fillColor: whiteColor,
+                    strokeColor: blueColor,
+                  ),
+                  width: uiManager.blockSizeHorizontal * 40,
+                  height: uiManager.blockSizeVertical * 5,
+                  color: yellowColor,
+                  cornerRaidus: 10,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: uiManager.blockSizeVertical * 3.5,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                UiManager.getText(
+                  text: accuracy,
+                  size: uiManager.blockSizeVertical * 3,
+                  strokeWidth: uiManager.blockSizeVertical * 0,
+                  fillColor: whiteColor,
+                  strokeColor: whiteColor,
+                ),
+                SizedBox(
+                  width: uiManager.blockSizeHorizontal * 15,
+                ),
+                UiManager.getCard(
+                  label: UiManager.getText(
+                    text: arguments["accuracy"],
                     size: uiManager.blockSizeVertical * 3,
                     strokeWidth: uiManager.blockSizeVertical * 1,
                     fillColor: whiteColor,
@@ -126,7 +133,7 @@ class Screen12 extends StatelessWidget {
               color: yellowColor,
               cornerRaidus: 10,
               onTap: () {
-                print("Got it button pressed");
+                Navigator.pop(context);
               },
             ),
             SizedBox(

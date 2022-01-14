@@ -271,6 +271,9 @@ Correct/Total
 answers:
 ''';
 
+const String total_answers = "Answers:";
+const String right_answers = "Right:";
+
 const String accuracy = "Accuracy:";
 const String total_time = "Total time:";
 const String well_done = "Well done!";
@@ -302,5 +305,4 @@ const String time_left = "0:59";
 const String construction_message = '''
 Multiplayer is under
 construction yet.
-Bullet as well.
 ''';

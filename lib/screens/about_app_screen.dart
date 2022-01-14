@@ -3,8 +3,8 @@ import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/managers/ui_manager.dart';
 
-class Screen05 extends StatelessWidget {
-  const Screen05({Key? key}) : super(key: key);
+class AboutAppScreen extends StatelessWidget {
+  const AboutAppScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

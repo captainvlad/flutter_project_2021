@@ -4,14 +4,13 @@ import 'package:sequel/blocs/download_bloc.dart';
 import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/managers/ui_manager.dart';
-import 'package:sequel/screens/screen_08.dart';
-import 'package:sequel/screens/screen_10.dart';
-import 'package:sequel/screens/screen_13.dart';
+import 'package:sequel/screens/no_internet_screen.dart';
+import 'package:sequel/screens/no_memory_screen.dart';
+import 'package:sequel/screens/greetings_screen.dart';
 import 'package:sequel/screens/loading_screen.dart';
-import 'package:sequel/screens/screen_16.dart';
 
-class Screen11 extends StatelessWidget {
-  const Screen11({Key? key}) : super(key: key);
+class DownloadQuestionsScreen extends StatelessWidget {
+  const DownloadQuestionsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +32,15 @@ class Screen11 extends StatelessWidget {
               case DownloadResult.progress:
                 return const LoadingScreen();
               case DownloadResult.success:
-                return Screen13(
+                return const GreetingsScreen(
                   title: success,
                 );
               case DownloadResult.connectionError:
-                return const Screen16();
+                return const NoInternetScreen();
               case DownloadResult.memoryError:
-                return const Screen10();
+                return const NoMemoryScreen();
               case DownloadResult.otherError:
-                return Screen13(
+                return const GreetingsScreen(
                   title: error,
                 );
               default:

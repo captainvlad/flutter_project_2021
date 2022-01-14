@@ -163,9 +163,12 @@ class SettingsScreen extends StatelessWidget {
                   color: yellowColor,
                   cornerRaidus: 10,
                   onTap: () {
-                    if (_gmBloc.state.multiplayer == button_8_1 ||
-                        _gmBloc.state.gameType == button_5) {
-                      Navigator.pushNamed(context, '/screen_17');
+                    if (_gmBloc.state.multiplayer == button_8_1) {
+                      Navigator.pushNamed(
+                          context, '/under_construction_screen');
+                    } else if (_gmBloc.state.gameType == button_5) {
+                      Navigator.pushNamed(
+                          context, '/bullet_quiz_question_screen');
                     } else {
                       Navigator.pushNamed(
                         context,

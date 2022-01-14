@@ -7,25 +7,24 @@ import 'package:sequel/blocs/download_bloc.dart';
 import 'package:sequel/blocs/game_config_bloc.dart';
 import 'package:sequel/blocs/settings_bloc.dart';
 import 'package:sequel/blocs/statistics_bloc.dart';
+import 'package:sequel/screens/bullet_quiz_end_screen.dart';
 import 'package:sequel/screens/bullet_quiz_question_screen.dart';
 import 'package:sequel/screens/classic_quiz_end_screen.dart';
 import 'package:sequel/managers/navigation_manager.dart';
 import 'package:sequel/screens/home_screen.dart';
 import 'package:sequel/screens/settings_screen.dart';
-import 'package:sequel/screens/screen_03.dart';
-import 'package:sequel/screens/screen_04.dart';
-import 'package:sequel/screens/screen_05.dart';
-import 'package:sequel/screens/screen_06.dart';
-import 'package:sequel/screens/screen_07.dart';
-import 'package:sequel/screens/screen_08.dart';
-import 'package:sequel/screens/screen_09.dart';
-import 'package:sequel/screens/screen_10.dart';
-import 'package:sequel/screens/screen_11.dart';
-import 'package:sequel/screens/screen_12.dart';
+import 'package:sequel/screens/stats_screen.dart';
+import 'package:sequel/screens/setting_screen.dart';
+import 'package:sequel/screens/about_app_screen.dart';
+import 'package:sequel/screens/achievements_screen.dart';
+import 'package:sequel/screens/detailed_achievement_screen.dart';
+import 'package:sequel/screens/no_internet_screen.dart';
+import 'package:sequel/screens/no_questions_screen.dart';
+import 'package:sequel/screens/no_memory_screen.dart';
+import 'package:sequel/screens/download_questions_screen.dart';
 import 'package:sequel/screens/loading_screen.dart';
-import 'package:sequel/screens/screen_17.dart';
+import 'package:sequel/screens/under_construction_screen.dart';
 import 'package:sequel/screens/classic_quiz_question_screen.dart';
-import 'package:sequel/screens/bullet_quiz_timer.dart';
 import 'res/values/colors.dart';
 
 void main() {
@@ -60,23 +59,25 @@ void main() {
             fontFamily: 'Ultra',
           ),
           navigatorKey: NavigationManager.navigatorKey,
-          // initialRoute: '/home_screen',
-          initialRoute: '/bullet_quiz_question_screen',
+          initialRoute: '/home_screen',
           routes: {
+            '/detailed_achievement_screen': (context) =>
+                const DetailedAchievementScreen(),
+            '/download_questions_screen': (context) =>
+                const DownloadQuestionsScreen(),
+            '/under_construction_screen': (context) =>
+                const UnderConstructionScreen(),
             '/home_screen': (context) => const HomeScreen(),
-            '/screen_03': (context) => const Screen03(),
-            '/screen_04': (context) => const Screen04(),
-            '/screen_05': (context) => const Screen05(),
-            '/screen_06': (context) => const Screen06(),
-            '/screen_07': (context) => const Screen07(),
-            '/screen_08': (context) => const Screen08(),
-            '/screen_09': (context) => const Screen09(),
-            '/screen_10': (context) => const Screen10(),
-            '/screen_11': (context) => const Screen11(),
-            '/screen_12': (context) => const Screen12(),
+            '/stats_screen': (context) => const StatsScreen(),
+            '/setting_screen': (context) => const SettingScreen(),
+            '/about_app_screen': (context) => const AboutAppScreen(),
+            '/achievements_screen': (context) => const AchievementsScreen(),
+            '/no_internet_screen': (context) => const NoInternetScreen(),
+            '/no_questions_screen': (context) => const NoQuestionsScreen(),
+            '/no_memory_screen': (context) => const NoMemoryScreen(),
             '/loading_screen': (context) => const LoadingScreen(),
-            '/screen_17': (context) => const Screen17(),
             '/settings_screen': (context) => const SettingsScreen(),
+            '/bullet_end_screen': (context) => const BulletQuizEndScreen(),
             '/classic_end_screen': (context) => const ClassicQuizEndScreen(),
             '/classic_quiz_question_screen': (context) =>
                 BlocProvider<ClassicQuizBloc>(
@@ -93,18 +94,4 @@ void main() {
       ),
     ),
   );
-
-  //     (value) {
-  //   runApp(
-  //     MaterialApp(
-  //       home: Scaffold(
-  //         body: MyApp2(),
-  //       ),
-  //       navigatorKey: NavService.navigatorKey,
-  //       routes: {
-  //         '/home': (context) => const Screen01(),
-  //       },
-  //     ),
-  //   );
-  // });
 }

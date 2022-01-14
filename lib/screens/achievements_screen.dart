@@ -5,8 +5,8 @@ import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/managers/ui_manager.dart';
 
-class Screen06 extends StatelessWidget {
-  const Screen06({Key? key}) : super(key: key);
+class AchievementsScreen extends StatelessWidget {
+  const AchievementsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +80,7 @@ class Screen06 extends StatelessWidget {
 
                           Navigator.pushNamed(
                             context,
-                            '/screen_07',
+                            '/detailed_achievement_screen',
                             arguments: achievement,
                           );
                         },
@@ -136,7 +136,7 @@ class Screen06 extends StatelessWidget {
 
                           Navigator.pushNamed(
                             context,
-                            '/screen_07',
+                            '/detailed_achievement_screen',
                             arguments: achievement,
                           );
                         },
@@ -200,7 +200,7 @@ class Screen06 extends StatelessWidget {
 
                           Navigator.pushNamed(
                             context,
-                            '/screen_07',
+                            '/detailed_achievement_screen',
                             arguments: achievement,
                           );
                         },
@@ -256,7 +256,7 @@ class Screen06 extends StatelessWidget {
 
                           Navigator.pushNamed(
                             context,
-                            '/screen_07',
+                            '/detailed_achievement_screen',
                             arguments: achievement,
                           );
                         },
@@ -320,7 +320,7 @@ class Screen06 extends StatelessWidget {
 
                           Navigator.pushNamed(
                             context,
-                            '/screen_07',
+                            '/detailed_achievement_screen',
                             arguments: achievement,
                           );
                         },
@@ -376,7 +376,7 @@ class Screen06 extends StatelessWidget {
 
                           Navigator.pushNamed(
                             context,
-                            '/screen_07',
+                            '/detailed_achievement_screen',
                             arguments: achievement,
                           );
                         },
@@ -434,7 +434,7 @@ class Screen06 extends StatelessWidget {
 
                       Navigator.pushNamed(
                         context,
-                        '/screen_07',
+                        '/detailed_achievement_screen',
                         arguments: achievement,
                       );
                     },

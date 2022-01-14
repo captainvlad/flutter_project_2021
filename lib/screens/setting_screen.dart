@@ -5,8 +5,8 @@ import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/managers/ui_manager.dart';
 import 'package:sequel/res/values/strings.dart';
 
-class Screen04 extends StatelessWidget {
-  const Screen04({Key? key}) : super(key: key);
+class SettingScreen extends StatelessWidget {
+  const SettingScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +150,7 @@ class Screen04 extends StatelessWidget {
               color: yellowColor,
               cornerRaidus: 10,
               onTap: () {
-                Navigator.pushNamed(context, '/screen_11');
+                Navigator.pushNamed(context, '/download_questions_screen');
               },
             ),
           ],

@@ -36,17 +36,19 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
 
   @override
   Stream<TimerState> mapEventToState(TimerEvent event) async* {
-    if (state.currentTime == -1) {
-      for (int i = 0; i < TimerState.timeRange; i++) {
-        await Future.delayed(
-          const Duration(seconds: 1),
-        );
-        state.updateTimer(TimerState.timeRange - i);
+    if (state.currentTime != -1) {
+      return;
+    }
 
-        yield TimerState(
-          currentTime: state.currentTime,
-        );
-      }
+    for (int i = 0; i <= TimerState.timeRange; i++) {
+      await Future.delayed(
+        const Duration(seconds: 1),
+      );
+      state.updateTimer(TimerState.timeRange - i);
+
+      yield TimerState(
+        currentTime: state.currentTime,
+      );
     }
 
     onExpired?.call();
