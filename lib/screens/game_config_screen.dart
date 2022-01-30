@@ -5,8 +5,8 @@ import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/managers/ui_manager.dart';
 
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+class GameConfigScreen extends StatelessWidget {
+  const GameConfigScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

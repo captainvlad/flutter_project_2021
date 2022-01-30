@@ -56,6 +56,7 @@ const String average_accuracy_bullet = "Average accuracy\n (Bullet):";
 const String achievements = "Achievements";
 const String all_achievements = "All achievements";
 const String update = "Update";
+const String reset = "Reset";
 
 // Screen 04 strings
 const String sound = "Sound";
@@ -189,6 +190,7 @@ all achievement items!
 ''';
 
 const String more_label = "More";
+const String locked_achievement = "This achievement is locked yet";
 
 // Screen 07 strings
 const String more_text_brief = '''

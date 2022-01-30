@@ -106,7 +106,7 @@ class SettingScreen extends StatelessWidget {
             ),
             BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
               String displayValue = state.downloadedQuestions == -1
-                  ? ""
+                  ? "0"
                   : "${state.downloadedQuestions}";
 
               if (state.downloadedQuestions == -1) {

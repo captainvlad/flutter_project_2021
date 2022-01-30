@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sequel/blocs/statistics_bloc.dart';
+import 'package:sequel/general_models/achievement.dart';
+import 'package:sequel/managers/achievements_manager.dart';
 import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/managers/ui_manager.dart';
@@ -26,9 +28,7 @@ class StatsScreen extends StatelessWidget {
               case StatisticsStatus.progress:
                 return const LoadingScreen();
               case StatisticsStatus.failure:
-                return const GreetingsScreen(
-                  title: error,
-                );
+                return const GreetingsScreen(title: error);
               case StatisticsStatus.success:
                 break;
             }
@@ -111,7 +111,7 @@ class StatsScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: uiManager.blockSizeVertical * 18,
+                  height: uiManager.blockSizeVertical * 10,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -190,7 +190,8 @@ class StatsScreen extends StatelessWidget {
                     ),
                     UiManager.getCard(
                       label: UiManager.getText(
-                        text: "${state.achievementsNumber}/7",
+                        text:
+                            "${state.achievementsNumber}/${AchievementsManager.standardAchievements.length}",
                         size: uiManager.blockSizeHorizontal * 4,
                         strokeWidth: uiManager.blockSizeHorizontal * 2,
                         fillColor: whiteColor,
@@ -217,8 +218,37 @@ class StatsScreen extends StatelessWidget {
                   height: uiManager.blockSizeVertical * 6,
                   color: yellowColor,
                   cornerRaidus: 10.0,
-                  onTap: () {
-                    Navigator.pushNamed(context, '/achievements_screen');
+                  onTap: () async {
+                    List<Achievement> la =
+                        await AchievementsManager().getAchievementsCasted();
+
+                    Navigator.pushNamed(
+                      context,
+                      '/achievements_screen',
+                      arguments: {
+                        'achievements': la,
+                      },
+                    );
+                  },
+                ),
+                SizedBox(
+                  height: uiManager.blockSizeVertical * 2,
+                ),
+                UiManager.getButton(
+                  label: UiManager.getText(
+                    text: reset,
+                    size: uiManager.blockSizeHorizontal * 5,
+                    strokeWidth: uiManager.blockSizeHorizontal * 2,
+                    strokeColor: blueColor,
+                  ),
+                  width: uiManager.blockSizeHorizontal * 80,
+                  height: uiManager.blockSizeVertical * 6,
+                  color: yellowColor,
+                  cornerRaidus: 10.0,
+                  onTap: () async {
+                    // AAADIP remove to utilities then
+                    print("RESET BUTTON PRESSED");
+                    _stBloc.add(StatisticsEvent.reset);
                   },
                 ),
                 SizedBox(

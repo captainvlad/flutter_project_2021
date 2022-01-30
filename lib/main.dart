@@ -12,7 +12,7 @@ import 'package:sequel/screens/bullet_quiz_question_screen.dart';
 import 'package:sequel/screens/classic_quiz_end_screen.dart';
 import 'package:sequel/managers/navigation_manager.dart';
 import 'package:sequel/screens/home_screen.dart';
-import 'package:sequel/screens/settings_screen.dart';
+import 'package:sequel/screens/game_config_screen.dart';
 import 'package:sequel/screens/stats_screen.dart';
 import 'package:sequel/screens/setting_screen.dart';
 import 'package:sequel/screens/about_app_screen.dart';
@@ -76,7 +76,7 @@ void main() {
             '/no_questions_screen': (context) => const NoQuestionsScreen(),
             '/no_memory_screen': (context) => const NoMemoryScreen(),
             '/loading_screen': (context) => const LoadingScreen(),
-            '/settings_screen': (context) => const SettingsScreen(),
+            '/game_config_screen': (context) => const GameConfigScreen(),
             '/bullet_end_screen': (context) => const BulletQuizEndScreen(),
             '/classic_end_screen': (context) => const ClassicQuizEndScreen(),
             '/classic_quiz_question_screen': (context) =>

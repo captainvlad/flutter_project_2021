@@ -1,11 +1,15 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sequel/general_models/achievement.dart';
+import 'package:sequel/general_models/statistic.dart';
 import 'package:sequel/managers/achievements_manager.dart';
+import 'package:sequel/managers/questions_cache_manager.dart';
 import 'package:sequel/managers/statistics_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum StatisticsEvent {
   update,
+  reset,
 }
 
 enum StatisticsStatus {
@@ -48,23 +52,42 @@ class StatisticsState extends Equatable {
       ];
 
   Future updateStats() async {
-    dynamic statsRow = await statsManager.getStatistics();
+    Statistic? stats = await statsManager.getStatistics();
 
-    totalGamesPlayed = statsRow[0]['total_games_played'];
-    totalPlayedMinutes = statsRow[0]['total_played_minutes'];
-    averageAccuracyCla = statsRow[0]['average_accuracy_classic'];
-    averageAccuracyBul = statsRow[0]['average_accuracy_bullet'];
+    totalGamesPlayed = stats!.totalGamesPlayed;
+    totalPlayedMinutes = stats.totalPlayTime;
+    averageAccuracyCla = stats.avgAccuracyClassic;
+    averageAccuracyBul = stats.avgAccuracyBullet;
 
-    for (Achievement achievement in AchievementsManager.standardAchievements) {
-      Achievement databaseAchievement =
-          await achievementsManager.getAchievementByName(achievement.name);
+    List<Achievement> achievements =
+        await AchievementsManager().getAchievementsCasted();
 
-      achievementsNumber = databaseAchievement.unlocked
-          ? achievementsNumber + 1
-          : achievementsNumber;
+    for (Achievement element in achievements) {
+      if (element.unlocked) {
+        achievementsNumber++;
+      }
     }
 
     version++;
+  }
+
+  Future resetStats() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+
+    pref.setInt("bullet_record", 0);
+    pref.setInt("winning_strike", 0);
+    pref.setInt("record_breaking_strike", 0);
+
+    print("PREF VALUES");
+
+    pref.getKeys().forEach(
+          (key) => print("$key: ${pref.get(key).toString()}"),
+        );
+
+    achievementsNumber = 0;
+    await statsManager.resetStatistics();
+    await AchievementsManager().lockAllItems();
+    await QuestionsCacheManager().removeAllQuestions();
   }
 }
 
@@ -82,38 +105,59 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
       achievementsNumber: state.achievementsNumber,
     );
 
-    try {
-      await Future.delayed(const Duration(seconds: 5));
-      await state.updateStats();
+    if (event == StatisticsEvent.update) {
+      try {
+        await Future.delayed(const Duration(seconds: 5));
+        await state.updateStats();
 
-      yield StatisticsState(
-        status: StatisticsStatus.success,
-        totalGamesPlayed: state.totalGamesPlayed,
-        totalPlayedMinutes: state.totalPlayedMinutes,
-        averageAccuracyCla: state.averageAccuracyCla,
-        averageAccuracyBul: state.averageAccuracyBul,
-        achievementsNumber: state.achievementsNumber,
-      );
-    } catch (e) {
-      yield StatisticsState(
-        status: StatisticsStatus.failure,
-        totalGamesPlayed: state.totalGamesPlayed,
-        totalPlayedMinutes: state.totalPlayedMinutes,
-        averageAccuracyCla: state.averageAccuracyCla,
-        averageAccuracyBul: state.averageAccuracyBul,
-        achievementsNumber: state.achievementsNumber,
-      );
+        yield StatisticsState(
+          status: StatisticsStatus.success,
+          totalGamesPlayed: state.totalGamesPlayed,
+          totalPlayedMinutes: state.totalPlayedMinutes,
+          averageAccuracyCla: state.averageAccuracyCla,
+          averageAccuracyBul: state.averageAccuracyBul,
+          achievementsNumber: state.achievementsNumber,
+        );
+      } catch (e) {
+        print("FUCKING ERROR"); // AAADIP remove later
+        print(e);
 
-      await Future.delayed(const Duration(seconds: 5));
+        yield StatisticsState(
+          status: StatisticsStatus.failure,
+          totalGamesPlayed: state.totalGamesPlayed,
+          totalPlayedMinutes: state.totalPlayedMinutes,
+          averageAccuracyCla: state.averageAccuracyCla,
+          averageAccuracyBul: state.averageAccuracyBul,
+          achievementsNumber: state.achievementsNumber,
+        );
+      }
+    } else if (event == StatisticsEvent.reset) {
+      try {
+        await Future.delayed(const Duration(seconds: 5));
+        await state.resetStats();
+        await state.updateStats();
 
-      yield StatisticsState(
-        status: StatisticsStatus.success,
-        totalGamesPlayed: state.totalGamesPlayed,
-        totalPlayedMinutes: state.totalPlayedMinutes,
-        averageAccuracyCla: state.averageAccuracyCla,
-        averageAccuracyBul: state.averageAccuracyBul,
-        achievementsNumber: state.achievementsNumber,
-      );
+        yield StatisticsState(
+          status: StatisticsStatus.success,
+          totalGamesPlayed: state.totalGamesPlayed,
+          totalPlayedMinutes: state.totalPlayedMinutes,
+          averageAccuracyCla: state.averageAccuracyCla,
+          averageAccuracyBul: state.averageAccuracyBul,
+          achievementsNumber: state.achievementsNumber,
+        );
+      } catch (e) {
+        print("FUCKING ERROR"); // AAADIP remove later
+        print(e);
+
+        yield StatisticsState(
+          status: StatisticsStatus.failure,
+          totalGamesPlayed: state.totalGamesPlayed,
+          totalPlayedMinutes: state.totalPlayedMinutes,
+          averageAccuracyCla: state.averageAccuracyCla,
+          averageAccuracyBul: state.averageAccuracyBul,
+          achievementsNumber: state.achievementsNumber,
+        );
+      }
     }
   }
 }

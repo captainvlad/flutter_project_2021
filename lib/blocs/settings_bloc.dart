@@ -1,3 +1,5 @@
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sequel/managers/questions_cache_manager.dart';
@@ -13,8 +15,11 @@ class SettingsState extends Equatable {
   String soundValue;
   int defaultTimeValue;
   int downloadedQuestions;
+  // Remove to utilities later AAADIP
+  AudioPlayer? player;
+  AudioCache? cache;
 
-  QuestionsCacheManager cache = QuestionsCacheManager();
+  QuestionsCacheManager cacheManager = QuestionsCacheManager();
 
   @override
   List<Object?> get props => [
@@ -27,17 +32,34 @@ class SettingsState extends Equatable {
     this.soundValue = 'off',
     this.defaultTimeValue = 1,
     this.downloadedQuestions = -1,
+    this.player,
   });
 
   Future updateDownloadedQuestions() async {
-    dynamic rows = await cache.getAllQuestions();
+    dynamic rows = await cacheManager.getAllQuestions();
     downloadedQuestions = rows.length;
     version++;
   }
 
-  void toggleSound() {
+  Future toggleSound() async {
     soundValue = soundValue == 'on' ? 'off' : 'on';
     version++;
+
+    // Remove to utilities later AAADIP
+    if (soundValue == 'on') {
+      if (player != null) {
+        player!.resume();
+      } else {
+        cache = AudioCache();
+        player = await cache!.play("sounds/dont_let_me_be_misunderstood.mp3");
+
+        player!.onPlayerCompletion.listen((event) {
+          cache!.play("sounds/dont_let_me_be_misunderstood.mp3");
+        });
+      }
+    } else {
+      player!.pause();
+    }
   }
 
   void toggleTime() {
@@ -63,7 +85,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   Stream<SettingsState> mapEventToState(SettingsEvent event) async* {
     switch (event) {
       case SettingsEvent.toggleSound:
-        state.toggleSound();
+        await state.toggleSound();
         break;
       case SettingsEvent.toggleTime:
         state.toggleTime();
@@ -77,6 +99,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       soundValue: state.soundValue,
       defaultTimeValue: state.defaultTimeValue,
       downloadedQuestions: state.downloadedQuestions,
+      player: state.player,
     );
   }
 }

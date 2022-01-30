@@ -88,6 +88,14 @@ class QuestionsCacheManager {
         .toList();
   }
 
+  Future getQuestionsNumber() async {
+    List<dynamic> result = await DbManager.runSelectQuery(
+      '''SELECT * FROM $questionsTable''',
+    );
+
+    return result.length;
+  }
+
   Question queryToQuestion(dynamic q) {
     return Question(
         title: q['title'],

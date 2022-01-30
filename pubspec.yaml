@@ -29,7 +29,10 @@ environment:
 dependencies:
   http: ^0.13.4
   sqflite: ^2.0.0+3
-  flutter:
+  fluttertoast: ^8.0.8
+  audioplayers: ^0.18.0
+  shared_preferences: ^2.0.12
+  flutter: 
     sdk: flutter
 
 
@@ -64,6 +67,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/sounds/
+    - assets/files/api_key.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -1,5 +1,8 @@
 import 'package:flutter/rendering.dart';
 import 'package:equatable/equatable.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sequel/general_models/achievement.dart';
+import 'package:sequel/managers/achievements_manager.dart';
 import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +11,7 @@ import 'package:sequel/general_models/question.dart';
 import 'package:sequel/managers/questions_manager.dart';
 import 'package:sequel/general_models/questions_types.dart';
 import 'package:sequel/managers/questions_cache_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum QuizStatus {
   loadQuestions,
@@ -158,15 +162,32 @@ class ClassicQuizBloc extends Bloc<QuizEvent, QuizState> {
           NavigationManager.navigatorKey.currentState!.pop();
           NavigationManager.navigatorKey.currentState!.pop();
 
+          bool hardLevelOn = quizLevel == "Hard";
+          Map<String, dynamic> classicStats = getStatistics(
+            minutesSpent,
+          );
+
+          List<String> unlockedAchievements =
+              await checkForUnlockedAchievementsClassic(
+            hardLevelOn,
+            false,
+            classicStats,
+          );
+
+          classicStats["unlocked_achievements"] = unlockedAchievements;
+          String unlockedAchievementsMessage =
+              generateMessage(unlockedAchievements);
+
+          Fluttertoast.showToast(
+            msg: unlockedAchievementsMessage,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+          );
+
           NavigationManager.navigatorKey.currentState!.pushNamed(
             '/classic_end_screen',
-            arguments: {
-              "correct_answers": state.rightAnswers,
-              "all_answers": state.questions.length,
-              "accuracy":
-                  "${state.rightAnswers / state.questions.length * 100}%",
-              "total_time": "$minutesSpent min",
-            },
+            arguments: classicStats,
           );
         } else {
           state.nextQuestion();
@@ -184,7 +205,7 @@ class ClassicQuizBloc extends Bloc<QuizEvent, QuizState> {
         result.checkQuestion(event.arguments["answer"]);
 
         yield result;
-        await Future.delayed(const Duration(seconds: 1));
+      // await Future.delayed(const Duration(seconds: 1));
     }
 
     yield QuizState(
@@ -193,5 +214,144 @@ class ClassicQuizBloc extends Bloc<QuizEvent, QuizState> {
       rightAnswers: state.rightAnswers,
       currentQuestion: state.questions[state.questionIndex],
     );
+  }
+
+  // AAADIP remove to Achievements manager
+  Future<List<String>> checkForUnlockedAchievementsClassic(
+    bool hardLevel,
+    bool multiPlayerOn,
+    Map<String, dynamic> bulletStats,
+  ) async {
+    List<String> result = [];
+    SharedPreferences pref = await SharedPreferences.getInstance();
+
+// Gordon Gekko unlocking
+    bool allAnswersCorrect =
+        bulletStats["accuracy"] == "100.0%"; // Should be in classic mode!
+
+    bool allAnswersWrong = bulletStats["accuracy"] == "0.0%" &&
+        int.parse(bulletStats["all_answers"]) > 0; // Should be in classic mode!
+
+    if (allAnswersCorrect) {
+      int? winningStreak = pref.getInt("winning_strike");
+
+      if (winningStreak == null) {
+        pref.setInt("winning_strike", 1);
+      } else if (winningStreak < 2) {
+        pref.setInt("winning_strike", winningStreak + 1);
+      } else {
+        Achievement unlockedAchievement =
+            await AchievementsManager().getAchievementByName(gordon_gekko);
+
+        if (!unlockedAchievement.unlocked) {
+          result.add(unlockedAchievement.name);
+          AchievementsManager().unlockItem(unlockedAchievement, 1);
+        }
+      }
+    } else {
+      pref.setInt("winning_strike", 0);
+    }
+
+// Flash unlocking  AAADIP SHOULD BE IN CLASSIC MODE!
+    if (int.parse(bulletStats["total_time"][0]) < 2) {
+      // Fix this later!
+      Achievement unlockedAchievement =
+          await AchievementsManager().getAchievementByName(flash);
+
+      if (!unlockedAchievement.unlocked) {
+        result.add(unlockedAchievement.name);
+        AchievementsManager().unlockItem(unlockedAchievement, 1);
+      }
+    }
+
+// Alan Turing unlocking
+    if (allAnswersCorrect && hardLevel) {
+      Achievement unlockedAchievement =
+          await AchievementsManager().getAchievementByName(alan_turing);
+
+      if (!unlockedAchievement.unlocked) {
+        result.add(unlockedAchievement.name);
+        AchievementsManager().unlockItem(unlockedAchievement, 1);
+      }
+    }
+
+// The Dude unlocking
+    if (multiPlayerOn) {
+      Achievement unlockedAchievement =
+          await AchievementsManager().getAchievementByName(the_dude);
+
+      if (!unlockedAchievement.unlocked) {
+        result.add(unlockedAchievement.name);
+        AchievementsManager().unlockItem(unlockedAchievement, 1);
+      }
+    }
+
+// 'Ace' and Nicky unlocking
+    if (allAnswersWrong) {
+      Achievement unlockedAchievement =
+          await AchievementsManager().getAchievementByName(ace_nicky);
+
+      if (!unlockedAchievement.unlocked) {
+        result.add(unlockedAchievement.name);
+        AchievementsManager().unlockItem(unlockedAchievement, 1);
+      }
+    }
+
+// Badcomedian unlocking
+    int achievementsUnlocked = 0;
+    List<Achievement> achi = await AchievementsManager()
+        .getAchievementsCasted(); // Make new method for getting unlocked achievements
+
+    for (Achievement a in achi) {
+      if (a.unlocked) {
+        achievementsUnlocked++;
+      }
+    }
+
+    if (achievementsUnlocked >= 6) {
+      Achievement unlockedAchievement =
+          await AchievementsManager().getAchievementByName(badcomedian);
+
+      if (!unlockedAchievement.unlocked) {
+        result.add(unlockedAchievement.name);
+        AchievementsManager().unlockItem(unlockedAchievement, 1);
+      }
+    }
+
+    return result;
+  }
+
+  Map<String, dynamic> getStatistics(
+    int minutesSpent,
+  ) {
+    String accuracy;
+
+    if (state.questionIndex == 0) {
+      accuracy = "0.0%";
+    } else {
+      accuracy = "${state.rightAnswers / state.questionIndex * 100}%";
+    }
+
+    return {
+      "correct_answers": "${state.rightAnswers}",
+      "all_answers": "${state.questionIndex}",
+      "accuracy": accuracy,
+      "total_time": "$minutesSpent min",
+    };
+  }
+
+  // AAADIP remove to utilities manager
+  String generateMessage(List<String> achievementsNames) {
+    if (achievementsNames.isEmpty) {
+      return "";
+    } else if (achievementsNames.length == 1) {
+      return "Following achievement: ${achievementsNames[0]} was unlocked";
+    }
+
+    String result = "Following achievements: " +
+        achievementsNames.join(", ") +
+        " were unclocked";
+
+    return result;
   }
 }

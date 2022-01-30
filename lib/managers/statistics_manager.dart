@@ -43,6 +43,20 @@ class StatisticsManager {
     );
   }
 
+  Future _setDefaultStats() async {
+    await _addStatistics(
+      Statistic(
+        totalPlayTime: 0,
+        totalGamesPlayed: 0,
+        avgAccuracyBullet: 0,
+        avgAccuracyClassic: 0,
+        achievementsNumber: 0,
+        downloadedQuestions: 0,
+        downloadedUsedQuestions: 0,
+      ),
+    );
+  }
+
   Future clearStatsTable() async {
     await DbManager.runSelectQuery(
       '''DELETE FROM $statsTable''',
@@ -55,42 +69,76 @@ class StatisticsManager {
     );
   }
 
-  Future getStatistics() async {
-    return await DbManager.runSelectQuery(
+  Future<Statistic?> getStatistics() async {
+    dynamic query = await DbManager.runSelectQuery(
       '''SELECT * FROM $statsTable''',
+    );
+
+    if (query.isEmpty) {
+      return null;
+    }
+
+    return Statistic(
+      totalPlayTime: query[0]["total_played_minutes"],
+      totalGamesPlayed: query[0]["total_games_played"],
+      achievementsNumber: query[0]["achievements_number"],
+      downloadedQuestions: query[0]["downloaded_questions"],
+      avgAccuracyBullet: query[0]["average_accuracy_bullet"],
+      avgAccuracyClassic: query[0]["average_accuracy_classic"],
+      downloadedUsedQuestions: query[0]["downloaded_used_questions"],
     );
   }
 
-  Future updateStatistics(Statistic statistic) async {
-    dynamic currentStatistics = await getStatistics();
+  Future updateBulletStatistics(Statistic statistic) async {
+    Statistic? currentStatistic = await getStatistics();
 
-    if (currentStatistics.length == 0) {
-      await _addStatistics(statistic);
+    if (currentStatistic == null) {
+      await _setDefaultStats();
       return;
     }
 
     int totalPlayedMinutes =
-        currentStatistics[0]['total_played_minutes'] + statistic.totalPlayTime;
+        currentStatistic.totalPlayTime + statistic.totalPlayTime;
 
     int totalGamesPlayed =
-        currentStatistics[0]['total_games_played'] + statistic.totalGamesPlayed;
+        currentStatistic.totalGamesPlayed + statistic.totalGamesPlayed;
 
-    int averageAccuracyClassic = currentStatistics[0]
-            ['average_accuracy_classic'] +
-        statistic.avgAccuracyClassic;
+    int averageAccuracyBullet =
+        currentStatistic.avgAccuracyBullet + statistic.avgAccuracyBullet;
 
-    int averageAccuracyBullet = currentStatistics[0]
-            ['average_accuracy_bullet'] +
-        statistic.avgAccuracyBullet;
+    int downloadedUsedQuestions = currentStatistic.downloadedUsedQuestions +
+        statistic.downloadedUsedQuestions;
 
-    int achievementsNumber = currentStatistics[0]['achievements_number'] +
-        statistic.achievementsNumber;
+    await DbManager.runUpdateQuery(
+      '''
+      UPDATE $statsTable SET
+        total_played_minutes=$totalPlayedMinutes,
+        total_games_played=$totalGamesPlayed,
+        average_accuracy_bullet=$averageAccuracyBullet,
+        downloaded_used_questions=$downloadedUsedQuestions
+      WHERE id=1
+      ''',
+    );
+  }
 
-    int downloadedQuestions = currentStatistics[0]['downloaded_questions'] +
-        statistic.downloadedQuestions;
+  Future updateClassicStatistics(Statistic statistic) async {
+    Statistic? currentStatistic = await getStatistics();
 
-    int downloadedUsedQuestions = currentStatistics[0]
-            ['downloaded_used_questions'] +
+    if (currentStatistic == null) {
+      await _setDefaultStats();
+      return;
+    }
+
+    int totalPlayedMinutes =
+        currentStatistic.totalPlayTime + statistic.totalPlayTime;
+
+    int totalGamesPlayed =
+        currentStatistic.totalGamesPlayed + statistic.totalGamesPlayed;
+
+    int averageAccuracyClassic =
+        currentStatistic.avgAccuracyClassic + statistic.avgAccuracyClassic;
+
+    int downloadedUsedQuestions = currentStatistic.downloadedUsedQuestions +
         statistic.downloadedUsedQuestions;
 
     await DbManager.runUpdateQuery(
@@ -99,10 +147,38 @@ class StatisticsManager {
         total_played_minutes=$totalPlayedMinutes,
         total_games_played=$totalGamesPlayed,
         average_accuracy_classic=$averageAccuracyClassic,
-        average_accuracy_bullet=$averageAccuracyBullet,
-        achievements_number=$achievementsNumber,
-        downloaded_questions=$downloadedQuestions,
         downloaded_used_questions=$downloadedUsedQuestions
+      WHERE id=1
+      ''',
+    );
+  }
+
+  Future resetStatistics() async {
+    dynamic currentStatistics = await getStatistics();
+
+    if (currentStatistics == null) {
+      await _addStatistics(Statistic(
+        totalPlayTime: 0,
+        totalGamesPlayed: 0,
+        avgAccuracyBullet: 0,
+        avgAccuracyClassic: 0,
+        achievementsNumber: 0,
+        downloadedQuestions: 0,
+        downloadedUsedQuestions: 0,
+      ));
+      return;
+    }
+
+    await DbManager.runUpdateQuery(
+      '''
+      UPDATE $statsTable SET
+        total_played_minutes=0,
+        total_games_played=0,
+        average_accuracy_classic=0,
+        average_accuracy_bullet=0,
+        achievements_number=0,
+        downloaded_questions=0,
+        downloaded_used_questions=0
       WHERE id=1
       ''',
     );

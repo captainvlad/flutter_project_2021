@@ -1,20 +1,20 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart';
+import 'package:sequel/managers/password_manager.dart';
 
 class ApiManager {
-  // static const String _apiKey = 'k_8qyf2u4e';
-  // static const String _apiKey = 'k_n8ccr4o7';
-  // static const String _apiKey = 'k_gb63ddzt';
-  // static const String _apiKey = 'k_xwe71f28';
-  // static const String _apiKey = 'k_gt620dn8';
-  // static const String _apiKey = 'k_dc46p11z';
-  // static const String _apiKey = 'k_a3us5k68';
-  // static const String _apiKey = 'k_n8oc1vb7';
-  // static const String _apiKey = 'k_9c19lhqt';
-  static const String _apiKey = 'k_uu7p7hxq';
+  static String _apiKey = "";
+
+  static initializeApiKey() async {
+    if (_apiKey.isEmpty) {
+      _apiKey = await PasswordManager().getKey();
+    }
+  }
 
   Future<Map<String, dynamic>> _processRequest(String query) async {
+    initializeApiKey();
+
     Response response = await get(
       Uri.parse(query),
     );

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sequel/general_models/question.dart';
+import 'package:sequel/managers/questions_cache_manager.dart';
+import 'package:sequel/res/icons/images.dart';
 import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/managers/ui_manager.dart';
@@ -50,8 +53,17 @@ class HomeScreen extends StatelessWidget {
                   height: uiManager.blockSizeVertical * 6,
                   color: yellowColor,
                   cornerRaidus: 10.0,
-                  onTap: () {
-                    Navigator.pushNamed(context, '/settings_screen');
+                  onTap: () async {
+                    for (int i = 0; i < 20; i++) {
+                      await QuestionsCacheManager().cacheItem(const Question(
+                        title: 'TITLE',
+                        imagePath: biggestBoxOfficeQuestionImage,
+                        rightAnswer: 'RIGHT',
+                        variants: ['RIGHT', 'WRONG', 'WRONG', 'WRONG'],
+                      ));
+                    }
+
+                    Navigator.pushNamed(context, '/game_config_screen');
                   },
                 ),
                 SizedBox(
@@ -69,7 +81,7 @@ class HomeScreen extends StatelessWidget {
                   height: uiManager.blockSizeVertical * 6,
                   color: yellowColor,
                   cornerRaidus: 10.0,
-                  onTap: () {
+                  onTap: () async {
                     Navigator.pushNamed(context, '/stats_screen');
                   },
                 ),

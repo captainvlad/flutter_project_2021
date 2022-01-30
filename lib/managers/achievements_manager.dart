@@ -49,6 +49,26 @@ class AchievementsManager {
     );
   }
 
+  Future getAchievementsNumber() async {
+    List<Achievement> achievements = await getAchievementsCasted();
+    return achievements.length;
+  }
+
+  Future<List<Achievement>> getAchievementsCasted() async {
+    List<dynamic> queryRows = await getAchievements();
+
+    return queryRows
+        .map(
+          (element) => Achievement(
+            name: element["name"],
+            description: element["description"],
+            imagePath: element["image_path"],
+            unlocked: element["unlocked"] == 1,
+          ),
+        )
+        .toList();
+  }
+
   Future getAchievementByName(String name) async {
     dynamic achievements = await getAchievements();
 
@@ -78,6 +98,20 @@ class AchievementsManager {
       WHERE name = '${achievement.name}'
       ''',
     );
+  }
+
+  Future lockAllItems() async {
+    List<Achievement> la = await getAchievementsCasted();
+
+    for (Achievement element in la) {
+      await DbManager.runUpdateQuery(
+        '''
+      UPDATE $achievementsTable
+      SET unlocked = 0
+      WHERE name = '${element.name}'
+      ''',
+      );
+    }
   }
 
   Future initDatabaseTable() async {
