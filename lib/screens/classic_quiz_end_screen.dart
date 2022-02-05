@@ -17,7 +17,7 @@ class ClassicQuizEndScreen extends StatelessWidget {
     String playTime = arguments["total_time"].replaceAll(RegExp("[^0-9]"), "");
     String accuracyValue = arguments["accuracy"].replaceAll('%', '');
 
-    StatisticsManager().updateClassicStatistics(
+    await StatisticsManager().updateClassicStatistics(
       Statistic(
         totalPlayTime: int.parse(playTime),
         totalGamesPlayed: 1,
@@ -26,6 +26,8 @@ class ClassicQuizEndScreen extends StatelessWidget {
         achievementsNumber: 0,
         downloadedQuestions: 0,
         downloadedUsedQuestions: int.parse(arguments["all_answers"]),
+        totalGamesPlayedBullet: 0,
+        totalGamesPlayedClassic: 0,
       ),
     );
 
@@ -38,10 +40,12 @@ class ClassicQuizEndScreen extends StatelessWidget {
     UiManager uiManager = UiManager(context);
 
     print("HERE AAADIP 1");
-    print(arguments["unlocked_achievements"]);
+    print(arguments["all_answers"]);
 
     return WillPopScope(
-      onWillPop: () => _popCallback(context, arguments),
+      onWillPop: () async {
+        return await _popCallback(context, arguments);
+      },
       child: Scaffold(
         body: SafeArea(
           child: Column(
@@ -158,8 +162,8 @@ class ClassicQuizEndScreen extends StatelessWidget {
                 height: uiManager.blockSizeVertical * 5,
                 color: yellowColor,
                 cornerRaidus: 10,
-                onTap: () {
-                  _popCallback(context, arguments);
+                onTap: () async {
+                  await _popCallback(context, arguments);
                 },
               ),
               SizedBox(

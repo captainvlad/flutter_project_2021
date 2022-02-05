@@ -3,33 +3,26 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sequel/general_models/question.dart';
+import 'package:sequel/general_models/questions_types.dart';
+import 'package:sequel/managers/navigation_manager.dart';
 import 'package:sequel/managers/questions_cache_manager.dart';
 import 'package:sequel/managers/questions_manager.dart';
 
 enum DownloadEvent {
   download,
+  updateQuestions,
   changeUploadQuestions,
   removePreviousQuestions,
-  updateQuestions,
-}
-
-enum DownloadResult {
-  raw,
-  none,
-  progress,
-  connectionError,
-  memoryError,
-  otherError,
-  success,
 }
 
 class DownloadState extends Equatable {
   int version;
-  int questionsAvailable;
   int questionsUsed;
-  int questionsToUpload;
   bool removePrevious;
-  DownloadResult downloadResult;
+  int questionsToUpload;
+  int questionsAvailable;
+
+  String? gameLevel;
 
   QuestionsCacheManager cache = QuestionsCacheManager();
   QuestionsManager questions = QuestionsManager();
@@ -40,7 +33,7 @@ class DownloadState extends Equatable {
     this.questionsUsed = -1,
     this.questionsToUpload = 10,
     this.removePrevious = false,
-    this.downloadResult = DownloadResult.raw,
+    this.gameLevel,
   });
 
   @override
@@ -55,6 +48,7 @@ class DownloadState extends Equatable {
   Future updateQuestions() async {
     questionsAvailable = 0;
     questionsUsed = 0;
+
     List<Question> allQuestions = await cache.getAllQuestions();
 
     for (Question question in allQuestions) {
@@ -68,7 +62,10 @@ class DownloadState extends Equatable {
     }
 
     version++;
-    downloadResult = DownloadResult.none;
+  }
+
+  void setStateGameLevel(String level) {
+    gameLevel = level;
   }
 
   void removePreviousChange() {
@@ -92,7 +89,7 @@ class DownloadState extends Equatable {
     version++;
   }
 
-  Future<DownloadResult> downloadQuestions() async {
+  Future<bool> downloadQuestions() async {
     version++;
 
     if (removePrevious) {
@@ -103,17 +100,20 @@ class DownloadState extends Equatable {
     // it's cheapest API calls one.
     try {
       for (int i = 0; i < questionsToUpload; i++) {
-        // Question questionToUpload = await questions.getQuestion(
-        // QuestionType.topRatingQuestion,
-        // );
-        // cache.cacheItem(questionToUpload);
+        Question questionToUpload = await questions.getQuestion(
+          QuestionType.topRatingQuestion,
+          gameLevel!,
+        );
+
+        await cache.cacheItem(questionToUpload);
       }
 
-      return DownloadResult.success;
-    } on HttpException catch (e) {
-      return DownloadResult.connectionError;
+      return true;
     } catch (e) {
-      return DownloadResult.otherError;
+      print("DownloadResult.connectionError");
+      print(e);
+
+      return false;
     }
   }
 }
@@ -125,7 +125,13 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
   Stream<DownloadState> mapEventToState(DownloadEvent event) async* {
     switch (event) {
       case DownloadEvent.updateQuestions:
+        NavigationManager.navigatorKey.currentState!
+            .pushNamed("/loading_screen");
+
         await state.updateQuestions();
+        await Future.delayed(const Duration(seconds: 5));
+
+        NavigationManager.navigatorKey.currentState!.pop();
         break;
       case DownloadEvent.removePreviousQuestions:
         state.removePreviousChange();
@@ -134,38 +140,24 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
         state.questionsToUploadChange();
         break;
       case DownloadEvent.download:
-        state.version++;
-
-        yield DownloadState(
-          questionsAvailable: state.questionsAvailable,
-          questionsUsed: state.questionsUsed,
-          questionsToUpload: state.questionsToUpload,
-          removePrevious: state.removePrevious,
-          downloadResult: DownloadResult.progress,
-        );
-
-        DownloadResult result = await state.downloadQuestions();
-        await Future.delayed(const Duration(seconds: 5));
-        state.version++;
-
-        yield DownloadState(
-          questionsAvailable: state.questionsAvailable,
-          questionsUsed: state.questionsUsed,
-          questionsToUpload: state.questionsToUpload,
-          removePrevious: state.removePrevious,
-          downloadResult: result,
-        );
+        NavigationManager.navigatorKey.currentState!
+            .pushNamed("/loading_screen");
 
         await Future.delayed(const Duration(seconds: 5));
-        state.version++;
+        bool result = await state.downloadQuestions();
 
-        yield DownloadState(
-          questionsAvailable: state.questionsAvailable,
-          questionsUsed: state.questionsUsed,
-          questionsToUpload: state.questionsToUpload,
-          removePrevious: state.removePrevious,
-          downloadResult: DownloadResult.none,
-        );
+        if (!result) {
+          print("!result");
+          NavigationManager.navigatorKey.currentState!
+              .pushNamed("/no_internet_screen");
+        } else {
+          NavigationManager.navigatorKey.currentState!.pushNamed(
+            "/greetings_screen",
+            arguments: {"text": "Success"},
+          );
+        }
+
+        state.version++;
         break;
     }
 
@@ -174,7 +166,7 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
       questionsUsed: state.questionsUsed,
       questionsToUpload: state.questionsToUpload,
       removePrevious: state.removePrevious,
-      downloadResult: state.downloadResult,
+      gameLevel: state.gameLevel,
     );
   }
 }

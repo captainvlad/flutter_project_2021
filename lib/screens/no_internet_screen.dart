@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:sequel/managers/navigation_manager.dart';
 import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/managers/ui_manager.dart';
@@ -64,6 +66,8 @@ class NoInternetScreen extends StatelessWidget {
               cornerRaidus: 10,
               onTap: () {
                 print("Play offline button pressed");
+                NavigationManager.navigatorKey.currentState!
+                    .popUntil((route) => route.isFirst);
               },
             ),
             SizedBox(
@@ -83,6 +87,7 @@ class NoInternetScreen extends StatelessWidget {
               cornerRaidus: 10,
               onTap: () {
                 print("Quit button pressed");
+                SystemChannels.platform.invokeMethod('SystemNavigator.pop');
               },
             ),
             SizedBox(

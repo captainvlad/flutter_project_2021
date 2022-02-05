@@ -2,6 +2,7 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sequel/managers/navigation_manager.dart';
 import 'package:sequel/managers/questions_cache_manager.dart';
 
 enum SettingsEvent {
@@ -31,7 +32,7 @@ class SettingsState extends Equatable {
   SettingsState({
     this.soundValue = 'off',
     this.defaultTimeValue = 1,
-    this.downloadedQuestions = -1,
+    this.downloadedQuestions = 0,
     this.player,
   });
 
@@ -91,7 +92,13 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         state.toggleTime();
         break;
       case SettingsEvent.updateDownloadedQuestions:
+        NavigationManager.navigatorKey.currentState!
+            .pushNamed("/loading_screen");
+
         await state.updateDownloadedQuestions();
+        await Future.delayed(const Duration(seconds: 5));
+
+        NavigationManager.navigatorKey.currentState!.pop();
         break;
     }
 

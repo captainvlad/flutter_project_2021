@@ -6,6 +6,8 @@ class Statistic {
   int achievementsNumber;
   int downloadedQuestions;
   int downloadedUsedQuestions;
+  int totalGamesPlayedBullet;
+  int totalGamesPlayedClassic;
 
   Statistic({
     required this.totalPlayTime,
@@ -14,6 +16,8 @@ class Statistic {
     required this.avgAccuracyClassic,
     required this.achievementsNumber,
     required this.downloadedQuestions,
+    required this.totalGamesPlayedBullet,
     required this.downloadedUsedQuestions,
+    required this.totalGamesPlayedClassic,
   });
 }

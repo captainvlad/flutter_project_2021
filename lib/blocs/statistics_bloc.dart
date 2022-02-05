@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sequel/general_models/achievement.dart';
 import 'package:sequel/general_models/statistic.dart';
 import 'package:sequel/managers/achievements_manager.dart';
+import 'package:sequel/managers/navigation_manager.dart';
 import 'package:sequel/managers/questions_cache_manager.dart';
 import 'package:sequel/managers/statistics_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,16 +13,8 @@ enum StatisticsEvent {
   reset,
 }
 
-enum StatisticsStatus {
-  none,
-  progress,
-  failure,
-  success,
-}
-
 class StatisticsState extends Equatable {
   late int version;
-  late StatisticsStatus status;
   late int totalGamesPlayed;
   late int averageAccuracyCla;
   late int averageAccuracyBul;
@@ -33,7 +26,6 @@ class StatisticsState extends Equatable {
 
   StatisticsState({
     this.version = 0,
-    this.status = StatisticsStatus.none,
     this.totalGamesPlayed = 0,
     this.totalPlayedMinutes = 0,
     this.averageAccuracyCla = 0,
@@ -44,7 +36,6 @@ class StatisticsState extends Equatable {
   @override
   List<Object?> get props => [
         version,
-        status,
         totalGamesPlayed,
         averageAccuracyCla,
         averageAccuracyBul,
@@ -53,6 +44,7 @@ class StatisticsState extends Equatable {
 
   Future updateStats() async {
     Statistic? stats = await statsManager.getStatistics();
+    achievementsNumber = 0;
 
     totalGamesPlayed = stats!.totalGamesPlayed;
     totalPlayedMinutes = stats.totalPlayTime;
@@ -96,22 +88,16 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
 
   @override
   Stream<StatisticsState> mapEventToState(StatisticsEvent event) async* {
-    yield StatisticsState(
-      status: StatisticsStatus.progress,
-      totalGamesPlayed: state.totalGamesPlayed,
-      totalPlayedMinutes: state.totalPlayedMinutes,
-      averageAccuracyCla: state.averageAccuracyCla,
-      averageAccuracyBul: state.averageAccuracyBul,
-      achievementsNumber: state.achievementsNumber,
-    );
+    NavigationManager.navigatorKey.currentState!.pushNamed("/loading_screen");
 
     if (event == StatisticsEvent.update) {
       try {
-        await Future.delayed(const Duration(seconds: 5));
         await state.updateStats();
+        await Future.delayed(const Duration(seconds: 5));
+
+        NavigationManager.navigatorKey.currentState!.pop();
 
         yield StatisticsState(
-          status: StatisticsStatus.success,
           totalGamesPlayed: state.totalGamesPlayed,
           totalPlayedMinutes: state.totalPlayedMinutes,
           averageAccuracyCla: state.averageAccuracyCla,
@@ -122,8 +108,12 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
         print("FUCKING ERROR"); // AAADIP remove later
         print(e);
 
+        NavigationManager.navigatorKey.currentState!.pushNamed(
+          "/greetings_screen",
+          arguments: {"text": "Sorry, something went wrong"},
+        );
+
         yield StatisticsState(
-          status: StatisticsStatus.failure,
           totalGamesPlayed: state.totalGamesPlayed,
           totalPlayedMinutes: state.totalPlayedMinutes,
           averageAccuracyCla: state.averageAccuracyCla,
@@ -131,14 +121,15 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
           achievementsNumber: state.achievementsNumber,
         );
       }
-    } else if (event == StatisticsEvent.reset) {
+    } else {
       try {
         await Future.delayed(const Duration(seconds: 5));
         await state.resetStats();
         await state.updateStats();
 
+        NavigationManager.navigatorKey.currentState!.pop();
+
         yield StatisticsState(
-          status: StatisticsStatus.success,
           totalGamesPlayed: state.totalGamesPlayed,
           totalPlayedMinutes: state.totalPlayedMinutes,
           averageAccuracyCla: state.averageAccuracyCla,
@@ -149,8 +140,12 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
         print("FUCKING ERROR"); // AAADIP remove later
         print(e);
 
+        NavigationManager.navigatorKey.currentState!.pushNamed(
+          "/greetings_screen",
+          arguments: {"text": "Sorry, something went wrong"},
+        );
+
         yield StatisticsState(
-          status: StatisticsStatus.failure,
           totalGamesPlayed: state.totalGamesPlayed,
           totalPlayedMinutes: state.totalPlayedMinutes,
           averageAccuracyCla: state.averageAccuracyCla,

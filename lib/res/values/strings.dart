@@ -24,6 +24,8 @@ const String button_2 = "Stats";
 const String button_3 = "Settings";
 const String button_4 = "About";
 
+const String back_to_app = "Back to app";
+
 // Screen 02 strings
 const String game_type = "Game type:";
 const String game_mode = "Game mode:";

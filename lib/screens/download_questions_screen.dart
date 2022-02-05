@@ -1,53 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sequel/blocs/download_bloc.dart';
 import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sequel/managers/ui_manager.dart';
-import 'package:sequel/screens/no_internet_screen.dart';
-import 'package:sequel/screens/no_memory_screen.dart';
-import 'package:sequel/screens/greetings_screen.dart';
-import 'package:sequel/screens/loading_screen.dart';
+import 'package:sequel/blocs/download_bloc.dart';
+import 'package:sequel/blocs/game_config_bloc.dart';
 
 class DownloadQuestionsScreen extends StatelessWidget {
   const DownloadQuestionsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    bool screenInitialized = false;
+
     DownloadBloc _dBloc = BlocProvider.of<DownloadBloc>(context);
+    GameConfigBloc _gcBloc = BlocProvider.of<GameConfigBloc>(context);
+
     UiManager uiManager = UiManager(context);
 
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: BlocBuilder<DownloadBloc, DownloadState>(
-              builder: (context, state) {
-            print("${state.downloadResult}");
+    return BlocBuilder<DownloadBloc, DownloadState>(builder: (context, state) {
+      if (!screenInitialized) {
+        print("Initializing screen");
+        _dBloc.state.setStateGameLevel(_gcBloc.state.level);
+        _dBloc.add(DownloadEvent.updateQuestions);
+        screenInitialized = true;
+        return const SizedBox.shrink();
+      }
 
-            switch (state.downloadResult) {
-              case DownloadResult.raw:
-                _dBloc.add(DownloadEvent.updateQuestions);
-                return const LoadingScreen();
-              case DownloadResult.progress:
-                return const LoadingScreen();
-              case DownloadResult.success:
-                return const GreetingsScreen(
-                  title: success,
-                );
-              case DownloadResult.connectionError:
-                return const NoInternetScreen();
-              case DownloadResult.memoryError:
-                return const NoMemoryScreen();
-              case DownloadResult.otherError:
-                return const GreetingsScreen(
-                  title: error,
-                );
-              default:
-                break;
-            }
-
-            return Column(
+      return Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
@@ -213,10 +197,10 @@ class DownloadQuestionsScreen extends StatelessWidget {
                   height: uiManager.blockSizeVertical * 2,
                 ),
               ],
-            );
-          }),
+            ),
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

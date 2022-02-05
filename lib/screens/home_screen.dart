@@ -53,15 +53,22 @@ class HomeScreen extends StatelessWidget {
                   height: uiManager.blockSizeVertical * 6,
                   color: yellowColor,
                   cornerRaidus: 10.0,
-                  onTap: () async {
-                    for (int i = 0; i < 20; i++) {
-                      await QuestionsCacheManager().cacheItem(const Question(
-                        title: 'TITLE',
-                        imagePath: biggestBoxOfficeQuestionImage,
-                        rightAnswer: 'RIGHT',
-                        variants: ['RIGHT', 'WRONG', 'WRONG', 'WRONG'],
-                      ));
-                    }
+                  onTap: () {
+                    // await StatisticsManager().clearStatsTable();
+                    // await StatisticsManager().removeStatsTable();
+                    // await StatisticsManager().createStatsTable();
+                    //
+                    // print("AAADIP DONEE");
+
+                    // for (int i = 0; i < 20; i++) {
+                    //   await QuestionsCacheManager().cacheItem(const Question(
+                    //     title: 'TITLE',
+                    //     imagePath: biggestBoxOfficeQuestionImage,
+                    //     rightAnswer: 'RIGHT',
+                    //     variants: ['RIGHT', 'WRONG', 'WRONG', 'WRONG'],
+                    //   ));
+                    // }
+                    // await QuestionsCacheManager().removeAllQuestions();
 
                     Navigator.pushNamed(context, '/game_config_screen');
                   },

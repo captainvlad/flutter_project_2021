@@ -97,15 +97,21 @@ class QuizState extends Equatable {
     }
   }
 
-  Future loadQuestionsFromDb(String type) async {
+  Future<bool> loadQuestionsFromDb(String type) async {
     version++;
     questions = [];
 
     try {
       questions = await questionDbManager.getAllQuestions();
       questions = questions.sublist(0, questionsNumber);
+      return true;
     } catch (e) {
       print("Database problems, we cannot continue working");
+      NavigationManager.navigatorKey.currentState!.pushNamed(
+        "/greetings_screen",
+        arguments: {"text": "Sorry, no questions available. Download some"},
+      );
+      return false;
     }
   }
 
@@ -150,7 +156,12 @@ class ClassicQuizBloc extends Bloc<QuizEvent, QuizState> {
         NavigationManager.navigatorKey.currentState!
             .pushNamed("/loading_screen");
 
-        await state.loadQuestionsFromDb(quizType);
+        bool result = await state.loadQuestionsFromDb(quizType);
+
+        if (!result) {
+          break;
+        }
+
         await Future.delayed(const Duration(seconds: 5));
 
         NavigationManager.navigatorKey.currentState!.pop();
@@ -178,17 +189,20 @@ class ClassicQuizBloc extends Bloc<QuizEvent, QuizState> {
           String unlockedAchievementsMessage =
               generateMessage(unlockedAchievements);
 
-          Fluttertoast.showToast(
-            msg: unlockedAchievementsMessage,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-          );
+          if (unlockedAchievementsMessage.isNotEmpty) {
+            Fluttertoast.showToast(
+              msg: unlockedAchievementsMessage,
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+            );
+          }
 
           NavigationManager.navigatorKey.currentState!.pushNamed(
             '/classic_end_screen',
             arguments: classicStats,
           );
+          return;
         } else {
           state.nextQuestion();
         }
@@ -203,7 +217,6 @@ class ClassicQuizBloc extends Bloc<QuizEvent, QuizState> {
         );
 
         result.checkQuestion(event.arguments["answer"]);
-
         yield result;
       // await Future.delayed(const Duration(seconds: 1));
     }
@@ -329,12 +342,13 @@ class ClassicQuizBloc extends Bloc<QuizEvent, QuizState> {
     if (state.questionIndex == 0) {
       accuracy = "0.0%";
     } else {
-      accuracy = "${state.rightAnswers / state.questionIndex * 100}%";
+      accuracy =
+          "${(state.rightAnswers / (state.questionIndex + 1) * 100).toStringAsFixed(1)}%";
     }
 
     return {
       "correct_answers": "${state.rightAnswers}",
-      "all_answers": "${state.questionIndex}",
+      "all_answers": "${state.questionIndex + 1}",
       "accuracy": accuracy,
       "total_time": "$minutesSpent min",
     };

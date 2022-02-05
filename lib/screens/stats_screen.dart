@@ -6,8 +6,6 @@ import 'package:sequel/managers/achievements_manager.dart';
 import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/managers/ui_manager.dart';
-import 'package:sequel/screens/greetings_screen.dart';
-import 'package:sequel/screens/loading_screen.dart';
 
 class StatsScreen extends StatelessWidget {
   const StatsScreen({Key? key}) : super(key: key);
@@ -16,21 +14,16 @@ class StatsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     StatisticsBloc _stBloc = BlocProvider.of<StatisticsBloc>(context);
     UiManager uiManager = UiManager(context);
+    bool screenInitialized = false;
 
     return Scaffold(
       body: SafeArea(
         child: BlocBuilder<StatisticsBloc, StatisticsState>(
           builder: (context, state) {
-            switch (state.status) {
-              case StatisticsStatus.none:
-                _stBloc.add(StatisticsEvent.update);
-                return const LoadingScreen();
-              case StatisticsStatus.progress:
-                return const LoadingScreen();
-              case StatisticsStatus.failure:
-                return const GreetingsScreen(title: error);
-              case StatisticsStatus.success:
-                break;
+            if (!screenInitialized) {
+              _stBloc.add(StatisticsEvent.update);
+              screenInitialized = true;
+              return SizedBox.shrink();
             }
 
             return Column(

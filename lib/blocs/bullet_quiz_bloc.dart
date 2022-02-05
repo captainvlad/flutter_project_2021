@@ -16,7 +16,12 @@ class BulletQuizBloc extends Bloc<QuizEvent, QuizState> {
         NavigationManager.navigatorKey.currentState!
             .pushNamed("/loading_screen");
 
-        await state.loadQuestionsFromDb(quizType);
+        bool result = await state.loadQuestionsFromDb(quizType);
+
+        if (!result) {
+          break;
+        }
+
         await Future.delayed(const Duration(seconds: 5));
 
         NavigationManager.navigatorKey.currentState!.pop();
@@ -52,7 +57,8 @@ class BulletQuizBloc extends Bloc<QuizEvent, QuizState> {
     if (state.questionIndex == 0) {
       accuracy = "0.0%";
     } else {
-      accuracy = "${state.rightAnswers / state.questionIndex * 100}%";
+      accuracy =
+          "${(state.rightAnswers / state.questionIndex * 100).toStringAsFixed(1)}%";
     }
 
     return {

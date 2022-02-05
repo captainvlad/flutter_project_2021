@@ -15,7 +15,7 @@ class BulletQuizEndScreen extends StatelessWidget {
     Navigator.pop(context);
     String accuracyValue = arguments["accuracy"].replaceAll('%', '');
 
-    StatisticsManager().updateBulletStatistics(
+    await StatisticsManager().updateBulletStatistics(
       Statistic(
         totalPlayTime: arguments["play_time_min"],
         totalGamesPlayed: 1,
@@ -24,6 +24,8 @@ class BulletQuizEndScreen extends StatelessWidget {
         achievementsNumber: 0,
         downloadedQuestions: 0,
         downloadedUsedQuestions: int.parse(arguments["all_answers"]),
+        totalGamesPlayedBullet: 0,
+        totalGamesPlayedClassic: 0,
       ),
     );
 
@@ -39,7 +41,9 @@ class BulletQuizEndScreen extends StatelessWidget {
     print(arguments["unlocked_achievements"]);
 
     return WillPopScope(
-      onWillPop: () => _popCallback(context, arguments),
+      onWillPop: () async {
+        return await _popCallback(context, arguments);
+      },
       child: Scaffold(
         body: SafeArea(
           child: Column(
@@ -161,8 +165,8 @@ class BulletQuizEndScreen extends StatelessWidget {
                 height: uiManager.blockSizeVertical * 5,
                 color: yellowColor,
                 cornerRaidus: 10,
-                onTap: () {
-                  _popCallback(context, arguments);
+                onTap: () async {
+                  await _popCallback(context, arguments);
                 },
               ),
               SizedBox(

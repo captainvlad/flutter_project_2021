@@ -13,7 +13,7 @@ class ApiManager {
   }
 
   Future<Map<String, dynamic>> _processRequest(String query) async {
-    initializeApiKey();
+    await initializeApiKey();
 
     Response response = await get(
       Uri.parse(query),
