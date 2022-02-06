@@ -1,16 +1,19 @@
-# sequel
+# Sequel: quiz on topic of cinematography
 
-A new Flutter project.
+This pet project is dedicated to improve my skills as a Flutter developer, 
+practice new framework and demnstrate progress to others. Full set of 
+screens and their designs can be got via following link:
+https://www.figma.com/file/SOQJHF2WdZriozwZYDTsdl/Sequel?node-id=0%3A1
 
-## Getting Started
+## Key numbers:
+- 17 screens
+- 10 managers
+- 7 blocs
 
-This project is a starting point for a Flutter application.
+## Key technologies and techniques:
+- REST API (taking data from API via HTTP calls)
+- BLoC (no comments, seen in the code files)
+- Database storage (sqflite for storing questions)
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This project was created by Vladyslav Zadrozohnyy,
+current student of Ukrainian Catholic University.
