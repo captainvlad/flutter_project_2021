@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sequel/res/values/colors.dart';
+import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/managers/ui_manager.dart';
+import 'package:sequel/res/widgets/text_widget.dart';
 
 class LoadingScreen extends StatelessWidget {
   const LoadingScreen({Key? key}) : super(key: key);
@@ -18,8 +20,8 @@ class LoadingScreen extends StatelessWidget {
             height: uiManager.blockSizeVertical * 2,
             width: double.infinity,
           ),
-          UiManager.getText(
-            text: "Loading",
+          CustomTextWidget(
+            text: loading,
             size: uiManager.blockSizeVertical * 4,
             strokeWidth: uiManager.blockSizeVertical * 1,
             fillColor: yellowColor,

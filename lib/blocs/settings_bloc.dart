@@ -4,21 +4,21 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sequel/managers/navigation_manager.dart';
 import 'package:sequel/managers/questions_cache_manager.dart';
+import 'package:sequel/managers/utility_manager.dart';
 
 enum SettingsEvent {
   toggleSound,
   toggleTime,
-  updateDownloadedQuestions,
+  update,
 }
 
 class SettingsState extends Equatable {
   int version = 0;
   String soundValue;
+  AudioCache? cache;
+  AudioPlayer? player;
   int defaultTimeValue;
   int downloadedQuestions;
-  // Remove to utilities later AAADIP
-  AudioPlayer? player;
-  AudioCache? cache;
 
   QuestionsCacheManager cacheManager = QuestionsCacheManager();
 
@@ -46,21 +46,14 @@ class SettingsState extends Equatable {
     soundValue = soundValue == 'on' ? 'off' : 'on';
     version++;
 
-    // Remove to utilities later AAADIP
-    if (soundValue == 'on') {
-      if (player != null) {
-        player!.resume();
-      } else {
-        cache = AudioCache();
-        player = await cache!.play("sounds/dont_let_me_be_misunderstood.mp3");
+    List<dynamic> playerResult = await UtilityManager().togglePlayer(
+      soundValue: soundValue,
+      cache: cache,
+      player: player,
+    );
 
-        player!.onPlayerCompletion.listen((event) {
-          cache!.play("sounds/dont_let_me_be_misunderstood.mp3");
-        });
-      }
-    } else {
-      player!.pause();
-    }
+    cache = playerResult[0];
+    player = playerResult[1];
   }
 
   void toggleTime() {
@@ -91,14 +84,14 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       case SettingsEvent.toggleTime:
         state.toggleTime();
         break;
-      case SettingsEvent.updateDownloadedQuestions:
+      case SettingsEvent.update:
         NavigationManager.navigatorKey.currentState!
             .pushNamed("/loading_screen");
 
         await state.updateDownloadedQuestions();
-        await Future.delayed(const Duration(seconds: 5));
+        await UtilityManager().sleep(seconds: 5);
 
-        NavigationManager.navigatorKey.currentState!.pop();
+        NavigationManager.popScreen();
         break;
     }
 

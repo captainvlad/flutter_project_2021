@@ -18,10 +18,10 @@ class GameConfigState extends Equatable {
 
   GameConfigState({
     this.version = 0,
-    this.gameMode = button_6,
-    this.gameType = button_5,
-    this.level = button_7,
-    this.multiplayer = button_8,
+    this.gameMode = head_to_head,
+    this.gameType = bullet,
+    this.level = easy,
+    this.multiplayer = off,
   });
 
   @override
@@ -34,26 +34,26 @@ class GameConfigState extends Equatable {
       ];
 
   void toggleGameType() {
-    gameType = gameType == button_5 ? button_5_1 : button_5;
+    gameType = gameType == bullet ? classic : bullet;
     version++;
   }
 
   void toggleGameMode() {
     switch (gameMode) {
-      case button_6:
-        gameMode = button_6_1;
+      case head_to_head:
+        gameMode = guess_by_frame;
         break;
-      case button_6_1:
-        gameMode = button_6_2;
+      case guess_by_frame:
+        gameMode = guess_director;
         break;
-      case button_6_2:
-        gameMode = button_6_3;
+      case guess_director:
+        gameMode = guess_by_tag;
         break;
-      case button_6_3:
-        gameMode = button_6_4;
+      case guess_by_tag:
+        gameMode = find_the_odd;
         break;
-      case button_6_4:
-        gameMode = button_6;
+      case find_the_odd:
+        gameMode = head_to_head;
         break;
     }
 
@@ -61,12 +61,12 @@ class GameConfigState extends Equatable {
   }
 
   void toggleLevel() {
-    level = level == button_7 ? button_7_1 : button_7;
+    level = level == easy ? hard : easy;
     version++;
   }
 
   void toggleMultiplayer() {
-    multiplayer = multiplayer == button_8 ? button_8_1 : button_8;
+    multiplayer = multiplayer == off ? on : off;
     version++;
   }
 }

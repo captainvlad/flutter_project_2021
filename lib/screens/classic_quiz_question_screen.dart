@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sequel/blocs/classic_quiz_bloc.dart';
-import 'package:sequel/blocs/game_config_bloc.dart';
 import 'package:sequel/res/values/colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/managers/ui_manager.dart';
+import 'package:sequel/blocs/game_config_bloc.dart';
+import 'package:sequel/blocs/classic_quiz_bloc.dart';
+import 'package:sequel/res/widgets/button_widget.dart';
+import 'package:sequel/res/widgets/text_widget.dart';
 
 class ClassicQuizQuestionScreen extends StatelessWidget {
   const ClassicQuizQuestionScreen({Key? key}) : super(key: key);
@@ -81,22 +83,16 @@ class ClassicQuizQuestionScreen extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            UiManager.getText(
+            CustomTextWidget(
               text: question_1,
               size: uiManager.blockSizeVertical * 3,
-              strokeWidth: uiManager.blockSizeVertical * 0,
-              fillColor: whiteColor,
-              strokeColor: whiteColor,
             ),
             SizedBox(
               width: uiManager.blockSizeHorizontal * 10,
             ),
-            UiManager.getText(
-              text: "#${state.questionIndex + 1}/${state.questions.length}",
+            CustomTextWidget(
+              text: "#${state.questionIndex + 1}/${state.questionsNumber}",
               size: uiManager.blockSizeVertical * 3,
-              strokeWidth: uiManager.blockSizeVertical * 0,
-              fillColor: whiteColor,
-              strokeColor: whiteColor,
             )
           ],
         ),
@@ -112,83 +108,69 @@ class ClassicQuizQuestionScreen extends StatelessWidget {
         ),
         SizedBox(
           width: uiManager.blockSizeHorizontal * 75,
-          child: UiManager.getText(
+          child: CustomTextWidget(
             text: biggestBoxOfficeTitle,
             size: uiManager.blockSizeVertical * 3,
-            strokeWidth: uiManager.blockSizeVertical * 0,
             strokeColor: yellowColor,
-            fillColor: whiteColor,
           ),
         ),
         SizedBox(
           height: uiManager.blockSizeVertical * 3,
         ),
-        UiManager.getButton(
-          label: UiManager.getText(
+        CustomButtonWidget(
+          label: CustomTextWidget(
             text: state.currentQuestion.variants[0],
             size: uiManager.blockSizeVertical * 2,
             strokeWidth: uiManager.blockSizeVertical * 1,
-            strokeColor: blueColor,
-            fillColor: whiteColor,
           ),
           width: uiManager.blockSizeHorizontal * 60,
           height: uiManager.blockSizeVertical * 4,
           color: state.answerColors[0],
-          cornerRaidus: 10,
           onTap: () =>
               checkQuestion(state.currentQuestion.variants[0], _cqBloc, state),
         ),
         SizedBox(
           height: uiManager.blockSizeVertical * 2,
         ),
-        UiManager.getButton(
-          label: UiManager.getText(
+        CustomButtonWidget(
+          label: CustomTextWidget(
             text: state.currentQuestion.variants[1],
             size: uiManager.blockSizeVertical * 2,
             strokeWidth: uiManager.blockSizeVertical * 1,
-            strokeColor: blueColor,
-            fillColor: whiteColor,
           ),
           width: uiManager.blockSizeHorizontal * 60,
           height: uiManager.blockSizeVertical * 4,
           color: state.answerColors[1],
-          cornerRaidus: 10,
           onTap: () =>
               checkQuestion(state.currentQuestion.variants[1], _cqBloc, state),
         ),
         SizedBox(
           height: uiManager.blockSizeVertical * 2,
         ),
-        UiManager.getButton(
-          label: UiManager.getText(
+        CustomButtonWidget(
+          label: CustomTextWidget(
             text: state.currentQuestion.variants[2],
             size: uiManager.blockSizeVertical * 2,
             strokeWidth: uiManager.blockSizeVertical * 1,
-            strokeColor: blueColor,
-            fillColor: whiteColor,
           ),
           width: uiManager.blockSizeHorizontal * 60,
           height: uiManager.blockSizeVertical * 4,
           color: state.answerColors[2],
-          cornerRaidus: 10,
           onTap: () =>
               checkQuestion(state.currentQuestion.variants[2], _cqBloc, state),
         ),
         SizedBox(
           height: uiManager.blockSizeVertical * 2,
         ),
-        UiManager.getButton(
-          label: UiManager.getText(
+        CustomButtonWidget(
+          label: CustomTextWidget(
             text: state.currentQuestion.variants[3],
             size: uiManager.blockSizeVertical * 2,
             strokeWidth: uiManager.blockSizeVertical * 1,
-            strokeColor: blueColor,
-            fillColor: whiteColor,
           ),
           width: uiManager.blockSizeHorizontal * 60,
           height: uiManager.blockSizeVertical * 4,
           color: state.answerColors[3],
-          cornerRaidus: 10,
           onTap: () =>
               checkQuestion(state.currentQuestion.variants[3], _cqBloc, state),
         ),

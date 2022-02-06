@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sequel/blocs/settings_bloc.dart';
 import 'package:sequel/res/values/colors.dart';
-import 'package:sequel/managers/ui_manager.dart';
 import 'package:sequel/res/values/strings.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sequel/managers/ui_manager.dart';
+import 'package:sequel/blocs/settings_bloc.dart';
+import 'package:sequel/managers/navigation_manager.dart';
+import 'package:sequel/res/widgets/button_widget.dart';
+import 'package:sequel/res/widgets/card_widget.dart';
+import 'package:sequel/res/widgets/text_widget.dart';
 
-class SettingScreen extends StatelessWidget {
-  SettingScreen({Key? key}) : super(key: key);
-
-  bool screenInitialized = false;
+class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    SettingsBloc _sBloc = BlocProvider.of<SettingsBloc>(context);
+    bool screenInitialized = false;
     UiManager uiManager = UiManager(context);
+    SettingsBloc _sBloc = BlocProvider.of<SettingsBloc>(context);
 
     return BlocBuilder<SettingsBloc, SettingsState>(
       builder: (context, state) {
         if (!screenInitialized) {
-          _sBloc.add(SettingsEvent.updateDownloadedQuestions);
           screenInitialized = true;
+          _sBloc.add(SettingsEvent.update);
           return const SizedBox.shrink();
         }
 
@@ -31,7 +34,7 @@ class SettingScreen extends StatelessWidget {
                   height: uiManager.blockSizeVertical * 2,
                   width: double.infinity,
                 ),
-                UiManager.getText(
+                CustomTextWidget(
                   text: title,
                   size: uiManager.blockSizeVertical * 6,
                   strokeWidth: uiManager.blockSizeVertical * 1,
@@ -40,30 +43,22 @@ class SettingScreen extends StatelessWidget {
                 ),
                 SizedBox(
                   height: uiManager.blockSizeVertical * 4,
-                  width: double.infinity,
                 ),
-                UiManager.getText(
+                CustomTextWidget(
                   text: sound,
                   size: uiManager.blockSizeHorizontal * 8,
-                  strokeWidth: uiManager.blockSizeHorizontal * 0,
-                  fillColor: whiteColor,
-                  strokeColor: blueColor,
                 ),
                 SizedBox(
                   height: uiManager.blockSizeVertical * 2,
                 ),
-                UiManager.getButton(
-                  label: UiManager.getText(
+                CustomButtonWidget(
+                  label: CustomTextWidget(
                     text: state.soundValue.toString(),
                     size: uiManager.blockSizeHorizontal * 6,
                     strokeWidth: uiManager.blockSizeHorizontal * 2,
-                    fillColor: whiteColor,
-                    strokeColor: blueColor,
                   ),
                   width: uiManager.blockSizeHorizontal * 30,
                   height: uiManager.blockSizeVertical * 5,
-                  color: yellowColor,
-                  cornerRaidus: 10,
                   onTap: () {
                     _sBloc.add(SettingsEvent.toggleSound);
                   },
@@ -71,28 +66,21 @@ class SettingScreen extends StatelessWidget {
                 SizedBox(
                   height: uiManager.blockSizeVertical * 2,
                 ),
-                UiManager.getText(
+                CustomTextWidget(
                   text: time_limit,
                   size: uiManager.blockSizeHorizontal * 8,
-                  strokeWidth: uiManager.blockSizeHorizontal * 0,
-                  fillColor: whiteColor,
-                  strokeColor: blueColor,
                 ),
                 SizedBox(
                   height: uiManager.blockSizeVertical * 2,
                 ),
-                UiManager.getButton(
-                  label: UiManager.getText(
+                CustomButtonWidget(
+                  label: CustomTextWidget(
                     text: "${state.defaultTimeValue} min",
                     size: uiManager.blockSizeHorizontal * 6,
                     strokeWidth: uiManager.blockSizeHorizontal * 2,
-                    strokeColor: blueColor,
-                    fillColor: whiteColor,
                   ),
                   width: uiManager.blockSizeHorizontal * 30,
                   height: uiManager.blockSizeVertical * 5,
-                  color: yellowColor,
-                  cornerRaidus: 10,
                   onTap: () {
                     _sBloc.add(SettingsEvent.toggleTime);
                   },
@@ -100,28 +88,21 @@ class SettingScreen extends StatelessWidget {
                 SizedBox(
                   height: uiManager.blockSizeVertical * 2,
                 ),
-                UiManager.getText(
+                CustomTextWidget(
                   text: downloaded_questions,
                   size: uiManager.blockSizeHorizontal * 8,
-                  strokeWidth: uiManager.blockSizeHorizontal * 0,
-                  fillColor: whiteColor,
-                  strokeColor: blueColor,
                 ),
                 SizedBox(
                   height: uiManager.blockSizeVertical * 2,
                 ),
-                UiManager.getCard(
-                  label: UiManager.getText(
+                CustomCardWidget(
+                  label: CustomTextWidget(
                     text: "${state.downloadedQuestions}",
                     size: uiManager.blockSizeHorizontal * 6,
                     strokeWidth: uiManager.blockSizeHorizontal * 2,
-                    strokeColor: blueColor,
-                    fillColor: whiteColor,
                   ),
                   width: uiManager.blockSizeHorizontal * 30,
                   height: uiManager.blockSizeVertical * 5,
-                  color: yellowColor,
-                  cornerRaidus: 10,
                 ),
                 SizedBox(
                   height: uiManager.blockSizeVertical * 2,
@@ -133,20 +114,17 @@ class SettingScreen extends StatelessWidget {
                 SizedBox(
                   height: uiManager.blockSizeVertical * 6,
                 ),
-                UiManager.getButton(
-                  label: UiManager.getText(
+                CustomButtonWidget(
+                  label: CustomTextWidget(
                     text: downloadQuestions,
                     size: uiManager.blockSizeHorizontal * 4,
                     strokeWidth: uiManager.blockSizeHorizontal * 2,
-                    strokeColor: blueColor,
-                    fillColor: whiteColor,
                   ),
                   width: uiManager.blockSizeHorizontal * 60,
                   height: uiManager.blockSizeVertical * 6,
-                  color: yellowColor,
-                  cornerRaidus: 10,
                   onTap: () {
-                    Navigator.pushNamed(context, '/download_questions_screen');
+                    NavigationManager.navigatorKey.currentState!
+                        .pushNamed("/download_questions_screen");
                   },
                 ),
               ],

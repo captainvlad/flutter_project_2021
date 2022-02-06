@@ -1,7 +1,8 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sequel/managers/navigation_manager.dart';
+import 'package:sequel/managers/utility_manager.dart';
 
 import 'classic_quiz_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sequel/managers/navigation_manager.dart';
 
 class BulletQuizBloc extends Bloc<QuizEvent, QuizState> {
   late String quizType;
@@ -19,12 +20,14 @@ class BulletQuizBloc extends Bloc<QuizEvent, QuizState> {
         bool result = await state.loadQuestionsFromDb(quizType);
 
         if (!result) {
+          NavigationManager.navigatorKey.currentState!
+              .pushNamed("/no_questions_screen");
           break;
         }
 
-        await Future.delayed(const Duration(seconds: 5));
+        await UtilityManager().sleep(seconds: 5);
 
-        NavigationManager.navigatorKey.currentState!.pop();
+        NavigationManager.popScreen();
         break;
       case QuizStatus.nextQuestion:
         state.nextQuestion();

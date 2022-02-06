@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:sequel/managers/navigation_manager.dart';
+import 'package:sequel/managers/utility_manager.dart';
 import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/managers/ui_manager.dart';
 import 'package:sequel/res/values/strings.dart';
+import 'package:sequel/res/widgets/button_widget.dart';
+import 'package:sequel/res/widgets/text_widget.dart';
 
 class GreetingsScreen extends StatelessWidget {
   const GreetingsScreen({
     Key? key,
   }) : super(key: key);
-
-  Future<bool> _popCallback() {
-    NavigationManager.navigatorKey.currentState!
-        .popUntil((route) => route.isFirst);
-
-    return Future(() => true);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +26,7 @@ class GreetingsScreen extends StatelessWidget {
 
     return WillPopScope(
       onWillPop: () async {
-        return await _popCallback();
+        return await UtilityManager().popCallback();
       },
       child: Scaffold(
         body: SafeArea(
@@ -44,7 +39,7 @@ class GreetingsScreen extends StatelessWidget {
                 height: uiManager.blockSizeVertical * 10,
               ),
               Center(
-                child: UiManager.getText(
+                child: CustomTextWidget(
                   text: title,
                   size: uiManager.blockSizeVertical * 6,
                   strokeWidth: uiManager.blockSizeVertical * 1,
@@ -55,21 +50,16 @@ class GreetingsScreen extends StatelessWidget {
               SizedBox(
                 height: uiManager.blockSizeVertical * 5,
               ),
-              UiManager.getButton(
-                label: UiManager.getText(
-                  text: "Back to app",
+              CustomButtonWidget(
+                label: CustomTextWidget(
+                  text: back_to_app,
                   size: uiManager.blockSizeVertical * 2.5,
                   strokeWidth: uiManager.blockSizeVertical * 1,
-                  fillColor: whiteColor,
-                  strokeColor: blueColor,
                 ),
                 width: uiManager.blockSizeHorizontal * 60,
                 height: uiManager.blockSizeVertical * 8,
-                color: yellowColor,
-                cornerRaidus: 10.0,
-                onTap: () {
-                  NavigationManager.navigatorKey.currentState!
-                      .popUntil((route) => route.isFirst);
+                onTap: () async {
+                  await UtilityManager().popCallback();
                 },
               ),
             ],

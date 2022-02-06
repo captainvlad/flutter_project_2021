@@ -5,6 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sequel/managers/ui_manager.dart';
 import 'package:sequel/blocs/download_bloc.dart';
 import 'package:sequel/blocs/game_config_bloc.dart';
+import 'package:sequel/res/widgets/button_widget.dart';
+import 'package:sequel/res/widgets/card_widget.dart';
+import 'package:sequel/res/widgets/text_widget.dart';
 
 class DownloadQuestionsScreen extends StatelessWidget {
   const DownloadQuestionsScreen({Key? key}) : super(key: key);
@@ -20,7 +23,6 @@ class DownloadQuestionsScreen extends StatelessWidget {
 
     return BlocBuilder<DownloadBloc, DownloadState>(builder: (context, state) {
       if (!screenInitialized) {
-        print("Initializing screen");
         _dBloc.state.setStateGameLevel(_gcBloc.state.level);
         _dBloc.add(DownloadEvent.updateQuestions);
         screenInitialized = true;
@@ -38,7 +40,7 @@ class DownloadQuestionsScreen extends StatelessWidget {
                   height: uiManager.blockSizeVertical * 2,
                   width: double.infinity,
                 ),
-                UiManager.getText(
+                CustomTextWidget(
                   text: title,
                   size: uiManager.blockSizeVertical * 6,
                   strokeWidth: uiManager.blockSizeVertical * 1,
@@ -52,56 +54,42 @@ class DownloadQuestionsScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    UiManager.getText(
+                    CustomTextWidget(
                       text: questions_available,
                       size: uiManager.blockSizeVertical * 4,
-                      strokeWidth: uiManager.blockSizeVertical * 0,
-                      fillColor: whiteColor,
-                      strokeColor: whiteColor,
                     ),
                     SizedBox(
                       width: uiManager.blockSizeHorizontal * 5,
                     ),
-                    UiManager.getCard(
-                      label: UiManager.getText(
+                    CustomCardWidget(
+                      label: CustomTextWidget(
                         text: "${state.questionsAvailable}",
                         size: uiManager.blockSizeVertical * 3,
                         strokeWidth: uiManager.blockSizeVertical * 1,
-                        fillColor: whiteColor,
-                        strokeColor: blueColor,
                       ),
                       width: uiManager.blockSizeHorizontal * 30,
                       height: uiManager.blockSizeVertical * 6,
-                      color: yellowColor,
-                      cornerRaidus: 10,
                     ),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    UiManager.getText(
+                    CustomTextWidget(
                       text: questions_used,
                       size: uiManager.blockSizeVertical * 4,
-                      strokeWidth: uiManager.blockSizeVertical * 0,
-                      fillColor: whiteColor,
-                      strokeColor: whiteColor,
                     ),
                     SizedBox(
                       width: uiManager.blockSizeHorizontal * 5,
                     ),
-                    UiManager.getCard(
-                      label: UiManager.getText(
+                    CustomCardWidget(
+                      label: CustomTextWidget(
                         text: "${state.questionsUsed}",
                         size: uiManager.blockSizeVertical * 3,
                         strokeWidth: uiManager.blockSizeVertical * 1,
-                        fillColor: whiteColor,
-                        strokeColor: blueColor,
                       ),
                       width: uiManager.blockSizeHorizontal * 30,
                       height: uiManager.blockSizeVertical * 6,
-                      color: yellowColor,
-                      cornerRaidus: 10,
                     ),
                   ],
                 ),
@@ -115,28 +103,21 @@ class DownloadQuestionsScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    UiManager.getText(
+                    CustomTextWidget(
                       text: questions_to_upload,
                       size: uiManager.blockSizeVertical * 4,
-                      strokeWidth: uiManager.blockSizeVertical * 0,
-                      fillColor: whiteColor,
-                      strokeColor: whiteColor,
                     ),
                     SizedBox(
                       width: uiManager.blockSizeHorizontal * 5,
                     ),
-                    UiManager.getButton(
-                      label: UiManager.getText(
+                    CustomButtonWidget(
+                      label: CustomTextWidget(
                         text: "${state.questionsToUpload}",
                         size: uiManager.blockSizeVertical * 3,
                         strokeWidth: uiManager.blockSizeVertical * 1,
-                        fillColor: whiteColor,
-                        strokeColor: blueColor,
                       ),
                       width: uiManager.blockSizeHorizontal * 30,
                       height: uiManager.blockSizeVertical * 6,
-                      color: yellowColor,
-                      cornerRaidus: 10,
                       onTap: () {
                         _dBloc.add(DownloadEvent.changeUploadQuestions);
                       },
@@ -146,28 +127,21 @@ class DownloadQuestionsScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    UiManager.getText(
+                    CustomTextWidget(
                       text: remove_previous,
                       size: uiManager.blockSizeVertical * 4,
-                      strokeWidth: uiManager.blockSizeVertical * 0,
-                      fillColor: whiteColor,
-                      strokeColor: whiteColor,
                     ),
                     SizedBox(
                       width: uiManager.blockSizeHorizontal * 8,
                     ),
-                    UiManager.getButton(
-                      label: UiManager.getText(
+                    CustomButtonWidget(
+                      label: CustomTextWidget(
                         text: state.removePrevious ? "True" : "False",
                         size: uiManager.blockSizeVertical * 3,
                         strokeWidth: uiManager.blockSizeVertical * 1,
-                        fillColor: whiteColor,
-                        strokeColor: blueColor,
                       ),
                       width: uiManager.blockSizeHorizontal * 30,
                       height: uiManager.blockSizeVertical * 6,
-                      color: yellowColor,
-                      cornerRaidus: 10,
                       onTap: () {
                         _dBloc.add(DownloadEvent.removePreviousQuestions);
                       },
@@ -177,18 +151,14 @@ class DownloadQuestionsScreen extends StatelessWidget {
                 SizedBox(
                   height: uiManager.blockSizeVertical * 4,
                 ),
-                UiManager.getButton(
-                  label: UiManager.getText(
-                    text: button_10,
+                CustomButtonWidget(
+                  label: CustomTextWidget(
+                    text: download,
                     size: uiManager.blockSizeVertical * 3,
                     strokeWidth: uiManager.blockSizeVertical * 1,
-                    strokeColor: blueColor,
-                    fillColor: whiteColor,
                   ),
                   width: uiManager.blockSizeHorizontal * 60,
                   height: uiManager.blockSizeVertical * 6,
-                  color: yellowColor,
-                  cornerRaidus: 10,
                   onTap: () {
                     _dBloc.add(DownloadEvent.download);
                   },

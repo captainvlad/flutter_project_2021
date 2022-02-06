@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:sequel/general_models/statistic.dart';
-import 'package:sequel/managers/statistics_manager.dart';
+import 'package:sequel/managers/navigation_manager.dart';
+import 'package:sequel/managers/stats_manager.dart';
 import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/managers/ui_manager.dart';
+import 'package:sequel/res/widgets/button_widget.dart';
+import 'package:sequel/res/widgets/card_widget.dart';
+import 'package:sequel/res/widgets/text_widget.dart';
 
 class BulletQuizEndScreen extends StatelessWidget {
   const BulletQuizEndScreen({Key? key}) : super(key: key);
@@ -12,20 +16,20 @@ class BulletQuizEndScreen extends StatelessWidget {
     BuildContext context,
     Map<dynamic, dynamic> arguments,
   ) async {
-    Navigator.pop(context);
+    NavigationManager.popScreen();
     String accuracyValue = arguments["accuracy"].replaceAll('%', '');
 
-    await StatisticsManager().updateBulletStatistics(
+    await StatsManager().updateBulletStatistics(
       Statistic(
-        totalPlayTime: arguments["play_time_min"],
         totalGamesPlayed: 1,
-        avgAccuracyBullet: double.parse(accuracyValue).toInt(),
         avgAccuracyClassic: 0,
         achievementsNumber: 0,
         downloadedQuestions: 0,
-        downloadedUsedQuestions: int.parse(arguments["all_answers"]),
         totalGamesPlayedBullet: 0,
         totalGamesPlayedClassic: 0,
+        totalPlayTime: arguments["play_time_min"],
+        avgAccuracyBullet: double.parse(accuracyValue).toInt(),
+        downloadedUsedQuestions: int.parse(arguments["all_answers"]),
       ),
     );
 
@@ -36,9 +40,6 @@ class BulletQuizEndScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final arguments = ModalRoute.of(context)!.settings.arguments as Map;
     UiManager uiManager = UiManager(context);
-
-    print("HERE AAADIP 0");
-    print(arguments["unlocked_achievements"]);
 
     return WillPopScope(
       onWillPop: () async {
@@ -53,28 +54,21 @@ class BulletQuizEndScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  UiManager.getText(
+                  CustomTextWidget(
                     text: total_answers,
                     size: uiManager.blockSizeVertical * 3,
-                    strokeWidth: uiManager.blockSizeVertical * 0,
-                    fillColor: whiteColor,
-                    strokeColor: whiteColor,
                   ),
                   SizedBox(
                     width: uiManager.blockSizeHorizontal * 18,
                   ),
-                  UiManager.getCard(
-                    label: UiManager.getText(
+                  CustomCardWidget(
+                    label: CustomTextWidget(
                       text: arguments["all_answers"],
                       size: uiManager.blockSizeVertical * 3,
                       strokeWidth: uiManager.blockSizeVertical * 1,
-                      fillColor: whiteColor,
-                      strokeColor: blueColor,
                     ),
                     width: uiManager.blockSizeHorizontal * 40,
                     height: uiManager.blockSizeVertical * 5,
-                    color: yellowColor,
-                    cornerRaidus: 10,
                   ),
                 ],
               ),
@@ -84,28 +78,21 @@ class BulletQuizEndScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  UiManager.getText(
+                  CustomTextWidget(
                     text: right_answers,
                     size: uiManager.blockSizeVertical * 3,
-                    strokeWidth: uiManager.blockSizeVertical * 0,
-                    fillColor: whiteColor,
-                    strokeColor: whiteColor,
                   ),
                   SizedBox(
                     width: uiManager.blockSizeHorizontal * 28,
                   ),
-                  UiManager.getCard(
-                    label: UiManager.getText(
+                  CustomCardWidget(
+                    label: CustomTextWidget(
                       text: arguments["correct_answers"],
                       size: uiManager.blockSizeVertical * 3,
                       strokeWidth: uiManager.blockSizeVertical * 1,
-                      fillColor: whiteColor,
-                      strokeColor: blueColor,
                     ),
                     width: uiManager.blockSizeHorizontal * 40,
                     height: uiManager.blockSizeVertical * 5,
-                    color: yellowColor,
-                    cornerRaidus: 10,
                   ),
                 ],
               ),
@@ -115,56 +102,42 @@ class BulletQuizEndScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  UiManager.getText(
+                  CustomTextWidget(
                     text: accuracy,
                     size: uiManager.blockSizeVertical * 3,
-                    strokeWidth: uiManager.blockSizeVertical * 0,
-                    fillColor: whiteColor,
-                    strokeColor: whiteColor,
                   ),
                   SizedBox(
                     width: uiManager.blockSizeHorizontal * 15,
                   ),
-                  UiManager.getCard(
-                    label: UiManager.getText(
+                  CustomCardWidget(
+                    label: CustomTextWidget(
                       text: arguments["accuracy"],
                       size: uiManager.blockSizeVertical * 3,
                       strokeWidth: uiManager.blockSizeVertical * 1,
-                      fillColor: whiteColor,
-                      strokeColor: blueColor,
                     ),
                     width: uiManager.blockSizeHorizontal * 40,
                     height: uiManager.blockSizeVertical * 5,
-                    color: yellowColor,
-                    cornerRaidus: 10,
                   ),
                 ],
               ),
               SizedBox(
                 height: uiManager.blockSizeVertical * 6,
               ),
-              UiManager.getText(
+              CustomTextWidget(
                 text: well_done,
                 size: uiManager.blockSizeVertical * 3,
-                strokeWidth: uiManager.blockSizeVertical * 0,
-                fillColor: whiteColor,
-                strokeColor: whiteColor,
               ),
               SizedBox(
                 height: uiManager.blockSizeVertical * 30,
               ),
-              UiManager.getButton(
-                label: UiManager.getText(
+              CustomButtonWidget(
+                label: CustomTextWidget(
                   text: got_it,
                   size: uiManager.blockSizeVertical * 3,
                   strokeWidth: uiManager.blockSizeVertical * 1,
-                  fillColor: whiteColor,
-                  strokeColor: blueColor,
                 ),
                 width: uiManager.blockSizeHorizontal * 40,
                 height: uiManager.blockSizeVertical * 5,
-                color: yellowColor,
-                cornerRaidus: 10,
                 onTap: () async {
                   await _popCallback(context, arguments);
                 },

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sequel/general_models/question.dart';
@@ -7,6 +5,7 @@ import 'package:sequel/general_models/questions_types.dart';
 import 'package:sequel/managers/navigation_manager.dart';
 import 'package:sequel/managers/questions_cache_manager.dart';
 import 'package:sequel/managers/questions_manager.dart';
+import 'package:sequel/managers/utility_manager.dart';
 
 enum DownloadEvent {
   download,
@@ -129,9 +128,9 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
             .pushNamed("/loading_screen");
 
         await state.updateQuestions();
-        await Future.delayed(const Duration(seconds: 5));
+        await UtilityManager().sleep(seconds: 5);
 
-        NavigationManager.navigatorKey.currentState!.pop();
+        NavigationManager.popScreen();
         break;
       case DownloadEvent.removePreviousQuestions:
         state.removePreviousChange();
@@ -143,18 +142,14 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
         NavigationManager.navigatorKey.currentState!
             .pushNamed("/loading_screen");
 
-        await Future.delayed(const Duration(seconds: 5));
+        await UtilityManager().sleep(seconds: 5);
         bool result = await state.downloadQuestions();
 
         if (!result) {
-          print("!result");
           NavigationManager.navigatorKey.currentState!
               .pushNamed("/no_internet_screen");
         } else {
-          NavigationManager.navigatorKey.currentState!.pushNamed(
-            "/greetings_screen",
-            arguments: {"text": "Success"},
-          );
+          NavigationManager.pushNamed("/greetings_screen", {"text": "Success"});
         }
 
         state.version++;

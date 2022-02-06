@@ -1,4 +1,3 @@
-// Questions titles
 const String oldestQuestionTitle =
     "Which of the following films is the oldest one?";
 
@@ -16,36 +15,34 @@ const String directorByImageTitle = "Who's the director of following film?";
 const String oddFilmByImageTitle =
     "Which of the films this actor did not star in?";
 
-// Screen 01 strings
 const String title = "Sequel";
 
-const String button_1 = "Play";
-const String button_2 = "Stats";
-const String button_3 = "Settings";
-const String button_4 = "About";
+const String play = "Play";
+const String stats = "Stats";
+const String about = "About";
+const String settings = "Settings";
 
 const String back_to_app = "Back to app";
 
-// Screen 02 strings
 const String game_type = "Game type:";
 const String game_mode = "Game mode:";
 const String level = "Level";
 const String multiplayer = "Multiplayer";
+const String loading = "Loading";
 
-const String button_5 = "Bullet";
-const String button_5_1 = "Classic";
-const String button_6 = "Head to head";
-const String button_6_1 = "Guess by frame";
-const String button_6_2 = "Guess director";
-const String button_6_3 = "Guess by tag";
-const String button_6_4 = "Find the odd";
-const String button_7 = "Easy";
-const String button_7_1 = "Hard";
-const String button_8 = "Off";
-const String button_8_1 = "On";
-const String button_9 = "Go!";
+const String bullet = "Bullet";
+const String classic = "Classic";
+const String head_to_head = "Head to head";
+const String guess_by_frame = "Guess by frame";
+const String guess_director = "Guess director";
+const String guess_by_tag = "Guess by tag";
+const String find_the_odd = "Find the odd";
+const String easy = "Easy";
+const String hard = "Hard";
+const String off = "Off";
+const String on = "On";
+const String go = "Go!";
 
-// Screen 03 strings
 const String play_time = "Total play time:";
 const String games_played = "Total games played:";
 
@@ -60,7 +57,6 @@ const String all_achievements = "All achievements";
 const String update = "Update";
 const String reset = "Reset";
 
-// Screen 04 strings
 const String sound = "Sound";
 const String sound_on = "on";
 
@@ -69,7 +65,6 @@ const String downloaded_questions = "Downloaded\nquestions";
 
 const String downloadQuestions = "Download questions";
 
-// Screen 05 strings
 const String about_app = "About app";
 const String app_description =
     "This app was designed in\norder to let cinephiles\ncompare get more\ninformation about favourite nmovies, compete with\nfriends and simply have nice time.";
@@ -139,7 +134,6 @@ available. For this go to
 questions’
 ''';
 
-// Screen 06 strings
 const String gordon_gekko = "Gordon Gekko";
 const String gekko_brief = '''
 Is given for 3
@@ -194,7 +188,6 @@ all achievement items!
 const String more_label = "More";
 const String locked_achievement = "This achievement is locked yet";
 
-// Screen 07 strings
 const String more_text_brief = '''
 Description text...
 (in scrollable view) 
@@ -202,7 +195,6 @@ Description text...
 
 const String back = "Back";
 
-// Screen 08 strings
 const String oops = "Oops...";
 const String no_internet_message = '''
 No Internet connection
@@ -219,7 +211,6 @@ mode
 const String play_offline = "Play in offline";
 const String quit = "Quit app";
 
-// Screen 09 strings
 const String no_questions = '''
 No downloaded 
 questions available
@@ -233,7 +224,6 @@ screen when you get
 Internet connection
 ''';
 
-// Screen 10 strings
 const String no_memory = '''
 Not enough memory for
 downloading questions
@@ -246,7 +236,6 @@ device or download
 less questions.
 ''';
 
-// Screen 11 strings
 const String questions_available = '''
 Questions
 available:
@@ -267,9 +256,8 @@ Remove
 previous:
 ''';
 
-const String button_10 = "Download";
+const String download = "Download";
 
-// Screen 12 strings
 const String correct_total_answers = '''
 Correct/Total
 answers:
@@ -283,7 +271,6 @@ const String total_time = "Total time:";
 const String well_done = "Well done!";
 const String got_it = "Got it!";
 
-// Screen 13 strings
 const String good_luck = '''
 We wish 
 you good
@@ -301,11 +288,8 @@ error
 happened
 ''';
 
-// Screen 14 strings
 const String question_1 = "Question";
-const String time_left = "0:59";
 
-// Screen 17 strings
 const String construction_message = '''
 Multiplayer is under
 construction yet.

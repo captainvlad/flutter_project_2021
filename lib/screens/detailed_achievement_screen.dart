@@ -3,12 +3,10 @@ import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/managers/ui_manager.dart';
 import 'package:sequel/general_models/achievement.dart';
+import 'package:sequel/res/widgets/text_widget.dart';
 
 class DetailedAchievementScreen extends StatelessWidget {
-  final String achievementName;
-
   const DetailedAchievementScreen({
-    this.achievementName = "",
     Key? key,
   }) : super(key: key);
 
@@ -28,7 +26,7 @@ class DetailedAchievementScreen extends StatelessWidget {
                 height: uiManager.blockSizeVertical * 2,
                 width: double.infinity,
               ),
-              UiManager.getText(
+              CustomTextWidget(
                 text: title,
                 size: uiManager.blockSizeVertical * 6,
                 strokeWidth: uiManager.blockSizeVertical * 1,
@@ -38,12 +36,9 @@ class DetailedAchievementScreen extends StatelessWidget {
               SizedBox(
                 height: uiManager.blockSizeVertical * 4,
               ),
-              UiManager.getText(
+              CustomTextWidget(
                 text: argument.name,
                 size: uiManager.blockSizeVertical * 3,
-                strokeWidth: uiManager.blockSizeVertical * 0,
-                fillColor: whiteColor,
-                strokeColor: whiteColor,
               ),
               SizedBox(
                 height: uiManager.blockSizeVertical * 1,
@@ -55,12 +50,9 @@ class DetailedAchievementScreen extends StatelessWidget {
               SizedBox(
                 height: uiManager.blockSizeVertical * 1,
               ),
-              UiManager.getText(
+              CustomTextWidget(
                 text: argument.description,
                 size: uiManager.blockSizeVertical * 3,
-                strokeWidth: uiManager.blockSizeVertical * 0,
-                fillColor: whiteColor,
-                strokeColor: whiteColor,
               ),
             ],
           ),

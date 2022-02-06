@@ -1,7 +1,7 @@
 import 'package:sequel/general_models/statistic.dart';
 import 'package:sequel/managers/db_manager.dart';
 
-class StatisticsManager {
+class StatsManager {
   static const String statsTable = "statistics";
 
   Future createStatsTable() async {

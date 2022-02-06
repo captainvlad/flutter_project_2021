@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:sequel/managers/navigation_manager.dart';
+import 'package:sequel/managers/utility_manager.dart';
 import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/managers/ui_manager.dart';
+import 'package:sequel/managers/navigation_manager.dart';
+import 'package:sequel/res/widgets/button_widget.dart';
+import 'package:sequel/res/widgets/text_widget.dart';
 
 class NoInternetScreen extends StatelessWidget {
   const NoInternetScreen({Key? key}) : super(key: key);
@@ -21,7 +23,7 @@ class NoInternetScreen extends StatelessWidget {
               height: uiManager.blockSizeVertical * 2,
               width: double.infinity,
             ),
-            UiManager.getText(
+            CustomTextWidget(
               text: oops,
               size: uiManager.blockSizeVertical * 6,
               strokeWidth: uiManager.blockSizeVertical * 1,
@@ -31,12 +33,9 @@ class NoInternetScreen extends StatelessWidget {
             SizedBox(
               height: uiManager.blockSizeVertical * 4,
             ),
-            UiManager.getText(
+            CustomTextWidget(
               text: no_internet_message,
               size: uiManager.blockSizeVertical * 3,
-              strokeWidth: uiManager.blockSizeVertical * 0,
-              fillColor: whiteColor,
-              strokeColor: whiteColor,
             ),
             Image.asset(
               'assets/images/image_22.png',
@@ -45,49 +44,35 @@ class NoInternetScreen extends StatelessWidget {
             SizedBox(
               height: uiManager.blockSizeVertical * 4,
             ),
-            UiManager.getText(
+            CustomTextWidget(
               text: no_internet_description,
               size: uiManager.blockSizeVertical * 3,
-              strokeWidth: uiManager.blockSizeVertical * 0,
-              fillColor: whiteColor,
-              strokeColor: whiteColor,
             ),
-            UiManager.getButton(
-              label: UiManager.getText(
+            CustomButtonWidget(
+              label: CustomTextWidget(
                 text: play_offline,
                 size: uiManager.blockSizeVertical * 3,
                 strokeWidth: uiManager.blockSizeVertical * 1,
-                fillColor: whiteColor,
-                strokeColor: blueColor,
               ),
               width: uiManager.blockSizeHorizontal * 80,
               height: uiManager.blockSizeVertical * 6,
-              color: yellowColor,
-              cornerRaidus: 10,
               onTap: () {
-                print("Play offline button pressed");
-                NavigationManager.navigatorKey.currentState!
-                    .popUntil((route) => route.isFirst);
+                NavigationManager.popToFirst();
               },
             ),
             SizedBox(
               height: uiManager.blockSizeVertical * 2,
             ),
-            UiManager.getButton(
-              label: UiManager.getText(
+            CustomButtonWidget(
+              label: CustomTextWidget(
                 text: quit,
                 size: uiManager.blockSizeVertical * 3,
                 strokeWidth: uiManager.blockSizeVertical * 1,
-                fillColor: whiteColor,
-                strokeColor: blueColor,
               ),
               width: uiManager.blockSizeHorizontal * 80,
               height: uiManager.blockSizeVertical * 6,
-              color: yellowColor,
-              cornerRaidus: 10,
               onTap: () {
-                print("Quit button pressed");
-                SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                UtilityManager().quitApp();
               },
             ),
             SizedBox(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/managers/ui_manager.dart';
+import 'package:sequel/res/widgets/text_widget.dart';
 
 class AboutAppScreen extends StatelessWidget {
   const AboutAppScreen({Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ class AboutAppScreen extends StatelessWidget {
                 height: uiManager.blockSizeVertical * 2,
                 width: double.infinity,
               ),
-              UiManager.getText(
+              CustomTextWidget(
                 text: title,
                 size: uiManager.blockSizeVertical * 6,
                 strokeWidth: uiManager.blockSizeVertical * 1,
@@ -47,22 +48,18 @@ class AboutAppScreen extends StatelessWidget {
                     SizedBox(
                       height: uiManager.blockSizeVertical * 2,
                     ),
-                    UiManager.getText(
+                    CustomTextWidget(
                       text: about_app,
                       size: uiManager.blockSizeHorizontal * 7,
                       strokeWidth: uiManager.blockSizeHorizontal * 2,
-                      fillColor: whiteColor,
-                      strokeColor: blueColor,
                     ),
                     SizedBox(
                       height: uiManager.blockSizeVertical * 2,
                     ),
-                    UiManager.getText(
+                    CustomTextWidget(
                       text: app_description,
                       size: uiManager.blockSizeHorizontal * 4,
                       strokeWidth: uiManager.blockSizeHorizontal * 2,
-                      fillColor: whiteColor,
-                      strokeColor: blueColor,
                     ),
                   ]),
                 ),
@@ -95,22 +92,18 @@ class AboutAppScreen extends StatelessWidget {
                       SizedBox(
                         height: uiManager.blockSizeVertical * 2,
                       ),
-                      UiManager.getText(
+                      CustomTextWidget(
                         text: game_types,
                         size: uiManager.blockSizeHorizontal * 7,
                         strokeWidth: uiManager.blockSizeHorizontal * 2,
-                        fillColor: whiteColor,
-                        strokeColor: blueColor,
                       ),
                       SizedBox(
                         height: uiManager.blockSizeVertical * 2,
                       ),
-                      UiManager.getText(
+                      CustomTextWidget(
                         text: game_types_description,
                         size: uiManager.blockSizeHorizontal * 4,
                         strokeWidth: uiManager.blockSizeHorizontal * 2,
-                        fillColor: whiteColor,
-                        strokeColor: blueColor,
                       ),
                     ],
                   ),
@@ -144,22 +137,18 @@ class AboutAppScreen extends StatelessWidget {
                       SizedBox(
                         height: uiManager.blockSizeVertical * 2,
                       ),
-                      UiManager.getText(
+                      CustomTextWidget(
                         text: game_modes,
                         size: uiManager.blockSizeHorizontal * 7,
                         strokeWidth: uiManager.blockSizeHorizontal * 2,
-                        fillColor: whiteColor,
-                        strokeColor: blueColor,
                       ),
                       SizedBox(
                         height: uiManager.blockSizeVertical * 2,
                       ),
-                      UiManager.getText(
+                      CustomTextWidget(
                         text: game_modes_description,
                         size: uiManager.blockSizeHorizontal * 4,
                         strokeWidth: uiManager.blockSizeHorizontal * 2,
-                        fillColor: whiteColor,
-                        strokeColor: blueColor,
                       ),
                     ],
                   ),
@@ -193,22 +182,18 @@ class AboutAppScreen extends StatelessWidget {
                       SizedBox(
                         height: uiManager.blockSizeVertical * 2,
                       ),
-                      UiManager.getText(
+                      CustomTextWidget(
                         text: game_levels,
                         size: uiManager.blockSizeHorizontal * 7,
                         strokeWidth: uiManager.blockSizeHorizontal * 2,
-                        fillColor: whiteColor,
-                        strokeColor: blueColor,
                       ),
                       SizedBox(
                         height: uiManager.blockSizeVertical * 2,
                       ),
-                      UiManager.getText(
+                      CustomTextWidget(
                         text: game_levels_description,
                         size: uiManager.blockSizeHorizontal * 4,
                         strokeWidth: uiManager.blockSizeHorizontal * 2,
-                        fillColor: whiteColor,
-                        strokeColor: blueColor,
                       ),
                     ],
                   ),
@@ -242,22 +227,18 @@ class AboutAppScreen extends StatelessWidget {
                       SizedBox(
                         height: uiManager.blockSizeVertical * 2,
                       ),
-                      UiManager.getText(
+                      CustomTextWidget(
                         text: multiplayer,
                         size: uiManager.blockSizeHorizontal * 7,
                         strokeWidth: uiManager.blockSizeHorizontal * 2,
-                        fillColor: whiteColor,
-                        strokeColor: blueColor,
                       ),
                       SizedBox(
                         height: uiManager.blockSizeVertical * 2,
                       ),
-                      UiManager.getText(
+                      CustomTextWidget(
                         text: multiplayer_description,
                         size: uiManager.blockSizeHorizontal * 4,
                         strokeWidth: uiManager.blockSizeHorizontal * 2,
-                        fillColor: whiteColor,
-                        strokeColor: blueColor,
                       ),
                     ],
                   ),
@@ -291,22 +272,18 @@ class AboutAppScreen extends StatelessWidget {
                       SizedBox(
                         height: uiManager.blockSizeVertical * 2,
                       ),
-                      UiManager.getText(
+                      CustomTextWidget(
                         text: offline_mode,
                         size: uiManager.blockSizeHorizontal * 7,
                         strokeWidth: uiManager.blockSizeHorizontal * 2,
-                        fillColor: whiteColor,
-                        strokeColor: blueColor,
                       ),
                       SizedBox(
                         height: uiManager.blockSizeVertical * 2,
                       ),
-                      UiManager.getText(
+                      CustomTextWidget(
                         text: offline_mode_description,
                         size: uiManager.blockSizeHorizontal * 4,
                         strokeWidth: uiManager.blockSizeHorizontal * 2,
-                        fillColor: whiteColor,
-                        strokeColor: blueColor,
                       ),
                     ],
                   ),

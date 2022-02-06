@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sequel/general_models/question.dart';
-import 'package:sequel/managers/questions_cache_manager.dart';
-import 'package:sequel/res/icons/images.dart';
+import 'package:sequel/managers/navigation_manager.dart';
 import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/managers/ui_manager.dart';
+import 'package:sequel/res/widgets/button_widget.dart';
+import 'package:sequel/res/widgets/text_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -21,7 +21,7 @@ class HomeScreen extends StatelessWidget {
             SizedBox(
               height: uiManager.blockSizeVertical * 2,
             ),
-            UiManager.getText(
+            CustomTextWidget(
               text: title,
               size: uiManager.blockSizeVertical * 6,
               strokeWidth: uiManager.blockSizeVertical * 1,
@@ -41,55 +41,31 @@ class HomeScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                UiManager.getButton(
-                  label: UiManager.getText(
-                    text: button_1,
+                CustomButtonWidget(
+                  label: CustomTextWidget(
+                    text: play,
                     size: uiManager.blockSizeVertical * 2.5,
                     strokeWidth: uiManager.blockSizeVertical * 1,
-                    fillColor: whiteColor,
-                    strokeColor: blueColor,
                   ),
                   width: uiManager.blockSizeHorizontal * 40,
                   height: uiManager.blockSizeVertical * 6,
-                  color: yellowColor,
-                  cornerRaidus: 10.0,
                   onTap: () {
-                    // await StatisticsManager().clearStatsTable();
-                    // await StatisticsManager().removeStatsTable();
-                    // await StatisticsManager().createStatsTable();
-                    //
-                    // print("AAADIP DONEE");
-
-                    // for (int i = 0; i < 20; i++) {
-                    //   await QuestionsCacheManager().cacheItem(const Question(
-                    //     title: 'TITLE',
-                    //     imagePath: biggestBoxOfficeQuestionImage,
-                    //     rightAnswer: 'RIGHT',
-                    //     variants: ['RIGHT', 'WRONG', 'WRONG', 'WRONG'],
-                    //   ));
-                    // }
-                    // await QuestionsCacheManager().removeAllQuestions();
-
-                    Navigator.pushNamed(context, '/game_config_screen');
+                    NavigationManager.pushNamed('/game_config_screen', null);
                   },
                 ),
                 SizedBox(
                   width: uiManager.blockSizeVertical * 2,
                 ),
-                UiManager.getButton(
-                  label: UiManager.getText(
-                    text: button_2,
+                CustomButtonWidget(
+                  label: CustomTextWidget(
+                    text: stats,
                     size: uiManager.blockSizeVertical * 2.5,
                     strokeWidth: uiManager.blockSizeVertical * 1,
-                    fillColor: whiteColor,
-                    strokeColor: blueColor,
                   ),
                   width: uiManager.blockSizeHorizontal * 40,
                   height: uiManager.blockSizeVertical * 6,
-                  color: yellowColor,
-                  cornerRaidus: 10.0,
-                  onTap: () async {
-                    Navigator.pushNamed(context, '/stats_screen');
+                  onTap: () {
+                    NavigationManager.pushNamed('/stats_screen', null);
                   },
                 ),
               ],
@@ -100,39 +76,31 @@ class HomeScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                UiManager.getButton(
-                  label: UiManager.getText(
-                    text: button_3,
+                CustomButtonWidget(
+                  label: CustomTextWidget(
+                    text: settings,
                     size: uiManager.blockSizeVertical * 2.5,
                     strokeWidth: uiManager.blockSizeVertical * 1,
-                    fillColor: whiteColor,
-                    strokeColor: blueColor,
                   ),
                   width: uiManager.blockSizeHorizontal * 40,
                   height: uiManager.blockSizeVertical * 6,
-                  color: yellowColor,
-                  cornerRaidus: 10.0,
                   onTap: () {
-                    Navigator.pushNamed(context, '/setting_screen');
+                    NavigationManager.pushNamed('/settings_screen', null);
                   },
                 ),
                 SizedBox(
                   width: uiManager.blockSizeVertical * 2,
                 ),
-                UiManager.getButton(
-                  label: UiManager.getText(
-                    text: button_4,
+                CustomButtonWidget(
+                  label: CustomTextWidget(
+                    text: about,
                     size: uiManager.blockSizeVertical * 2.5,
                     strokeWidth: uiManager.blockSizeVertical * 1,
-                    fillColor: whiteColor,
-                    strokeColor: blueColor,
                   ),
                   width: uiManager.blockSizeHorizontal * 40,
                   height: uiManager.blockSizeVertical * 6,
-                  color: yellowColor,
-                  cornerRaidus: 10.0,
                   onTap: () {
-                    Navigator.pushNamed(context, '/about_app_screen');
+                    NavigationManager.pushNamed('/about_app_screen', null);
                   },
                 ),
               ],

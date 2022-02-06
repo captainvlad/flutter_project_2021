@@ -5,15 +5,16 @@ import 'package:sequel/general_models/statistic.dart';
 import 'package:sequel/managers/achievements_manager.dart';
 import 'package:sequel/managers/navigation_manager.dart';
 import 'package:sequel/managers/questions_cache_manager.dart';
-import 'package:sequel/managers/statistics_manager.dart';
+import 'package:sequel/managers/stats_manager.dart';
+import 'package:sequel/managers/utility_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum StatisticsEvent {
+enum StatsEvent {
   update,
   reset,
 }
 
-class StatisticsState extends Equatable {
+class StatsState extends Equatable {
   late int version;
   late int totalGamesPlayed;
   late int averageAccuracyCla;
@@ -21,10 +22,10 @@ class StatisticsState extends Equatable {
   late int achievementsNumber;
   late int totalPlayedMinutes;
 
-  StatisticsManager statsManager = StatisticsManager();
+  StatsManager statsManager = StatsManager();
   AchievementsManager achievementsManager = AchievementsManager();
 
-  StatisticsState({
+  StatsState({
     this.version = 0,
     this.totalGamesPlayed = 0,
     this.totalPlayedMinutes = 0,
@@ -83,37 +84,26 @@ class StatisticsState extends Equatable {
   }
 }
 
-class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
-  StatisticsBloc() : super(StatisticsState());
+class StatsBloc extends Bloc<StatsEvent, StatsState> {
+  StatsBloc() : super(StatsState());
 
   @override
-  Stream<StatisticsState> mapEventToState(StatisticsEvent event) async* {
-    NavigationManager.navigatorKey.currentState!.pushNamed("/loading_screen");
+  Stream<StatsState> mapEventToState(StatsEvent event) async* {
+    NavigationManager.pushNamed("/loading_screen", null);
 
-    if (event == StatisticsEvent.update) {
+    if (event == StatsEvent.update) {
       try {
         await state.updateStats();
-        await Future.delayed(const Duration(seconds: 5));
+        await UtilityManager().sleep(seconds: 5);
 
-        NavigationManager.navigatorKey.currentState!.pop();
-
-        yield StatisticsState(
-          totalGamesPlayed: state.totalGamesPlayed,
-          totalPlayedMinutes: state.totalPlayedMinutes,
-          averageAccuracyCla: state.averageAccuracyCla,
-          averageAccuracyBul: state.averageAccuracyBul,
-          achievementsNumber: state.achievementsNumber,
-        );
+        NavigationManager.popScreen();
       } catch (e) {
-        print("FUCKING ERROR"); // AAADIP remove later
-        print(e);
-
-        NavigationManager.navigatorKey.currentState!.pushNamed(
+        NavigationManager.pushNamed(
           "/greetings_screen",
-          arguments: {"text": "Sorry, something went wrong"},
+          {"text": "Sorry, something went wrong"},
         );
-
-        yield StatisticsState(
+      } finally {
+        yield StatsState(
           totalGamesPlayed: state.totalGamesPlayed,
           totalPlayedMinutes: state.totalPlayedMinutes,
           averageAccuracyCla: state.averageAccuracyCla,
@@ -123,29 +113,18 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
       }
     } else {
       try {
-        await Future.delayed(const Duration(seconds: 5));
+        await UtilityManager().sleep(seconds: 5);
         await state.resetStats();
         await state.updateStats();
 
-        NavigationManager.navigatorKey.currentState!.pop();
-
-        yield StatisticsState(
-          totalGamesPlayed: state.totalGamesPlayed,
-          totalPlayedMinutes: state.totalPlayedMinutes,
-          averageAccuracyCla: state.averageAccuracyCla,
-          averageAccuracyBul: state.averageAccuracyBul,
-          achievementsNumber: state.achievementsNumber,
-        );
+        NavigationManager.popScreen();
       } catch (e) {
-        print("FUCKING ERROR"); // AAADIP remove later
-        print(e);
-
-        NavigationManager.navigatorKey.currentState!.pushNamed(
+        NavigationManager.pushNamed(
           "/greetings_screen",
-          arguments: {"text": "Sorry, something went wrong"},
+          {"text": "Sorry, something went wrong"},
         );
-
-        yield StatisticsState(
+      } finally {
+        yield StatsState(
           totalGamesPlayed: state.totalGamesPlayed,
           totalPlayedMinutes: state.totalPlayedMinutes,
           averageAccuracyCla: state.averageAccuracyCla,

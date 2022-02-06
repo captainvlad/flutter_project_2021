@@ -1,11 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sequel/managers/ui_manager.dart';
+import 'package:sequel/managers/navigation_manager.dart';
 import 'package:sequel/general_models/achievement.dart';
+import 'package:sequel/managers/utility_manager.dart';
 import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
+import 'package:sequel/res/widgets/button_widget.dart';
+import 'package:sequel/res/widgets/text_widget.dart';
 
 class AchievementWidget extends StatelessWidget {
   final double defauktBlurValue = 10;
@@ -16,18 +19,26 @@ class AchievementWidget extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  void onMoreTapped() {
+    if (achievement.unlocked) {
+      NavigationManager.navigatorKey.currentState!.pushNamed(
+        '/detailed_achievement_screen',
+        arguments: achievement,
+      );
+    } else {
+      UtilityManager().showToast(toastText: locked_achievement);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     UiManager uiManager = UiManager(context);
 
     return Column(
       children: [
-        UiManager.getText(
+        CustomTextWidget(
           text: achievement.name,
           size: uiManager.blockSizeVertical * 3,
-          strokeWidth: uiManager.blockSizeVertical * 0,
-          fillColor: whiteColor,
-          strokeColor: whiteColor,
         ),
         SizedBox(
           height: uiManager.blockSizeVertical * 1,
@@ -51,44 +62,22 @@ class AchievementWidget extends StatelessWidget {
             ),
             Column(
               children: <Widget>[
-                UiManager.getText(
+                CustomTextWidget(
                   text: achievement.description,
                   size: uiManager.blockSizeVertical * 2,
-                  strokeWidth: uiManager.blockSizeVertical * 0,
-                  strokeColor: whiteColor,
-                  fillColor: whiteColor,
                 ),
                 SizedBox(
                   height: uiManager.blockSizeVertical * 6,
                 ),
-                UiManager.getButton(
-                  label: UiManager.getText(
+                CustomButtonWidget(
+                  label: CustomTextWidget(
                     text: more_label,
                     size: uiManager.blockSizeVertical * 2,
                     strokeWidth: uiManager.blockSizeVertical * 1,
-                    strokeColor: blueColor,
-                    fillColor: whiteColor,
                   ),
                   width: uiManager.blockSizeHorizontal * 40,
                   height: uiManager.blockSizeVertical * 4,
-                  color: yellowColor,
-                  cornerRaidus: 10,
-                  onTap: () {
-                    if (achievement.unlocked) {
-                      Navigator.pushNamed(
-                        context,
-                        '/detailed_achievement_screen',
-                        arguments: achievement,
-                      );
-                    } else {
-                      Fluttertoast.showToast(
-                        msg: locked_achievement,
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                      );
-                    }
-                  },
+                  onTap: () => onMoreTapped(),
                 )
               ],
             ),
@@ -111,12 +100,9 @@ class AchievementWidgetReversed extends AchievementWidget {
 
     return Column(
       children: [
-        UiManager.getText(
+        CustomTextWidget(
           text: achievement.name,
           size: uiManager.blockSizeVertical * 3,
-          strokeWidth: uiManager.blockSizeVertical * 0,
-          fillColor: whiteColor,
-          strokeColor: whiteColor,
         ),
         SizedBox(
           height: uiManager.blockSizeVertical * 1,
@@ -126,44 +112,22 @@ class AchievementWidgetReversed extends AchievementWidget {
           children: <Widget>[
             Column(
               children: <Widget>[
-                UiManager.getText(
+                CustomTextWidget(
                   text: achievement.description,
                   size: uiManager.blockSizeVertical * 2,
-                  strokeWidth: uiManager.blockSizeVertical * 0,
-                  strokeColor: whiteColor,
-                  fillColor: whiteColor,
                 ),
                 SizedBox(
                   height: uiManager.blockSizeVertical * 6,
                 ),
-                UiManager.getButton(
-                  label: UiManager.getText(
+                CustomButtonWidget(
+                  label: CustomTextWidget(
                     text: more_label,
                     size: uiManager.blockSizeVertical * 2,
                     strokeWidth: uiManager.blockSizeVertical * 1,
-                    strokeColor: blueColor,
-                    fillColor: whiteColor,
                   ),
                   width: uiManager.blockSizeHorizontal * 40,
                   height: uiManager.blockSizeVertical * 4,
-                  color: yellowColor,
-                  cornerRaidus: 10,
-                  onTap: () {
-                    if (achievement.unlocked) {
-                      Navigator.pushNamed(
-                        context,
-                        '/detailed_achievement_screen',
-                        arguments: achievement,
-                      );
-                    } else {
-                      Fluttertoast.showToast(
-                        msg: locked_achievement,
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                      );
-                    }
-                  },
+                  onTap: () => onMoreTapped(),
                 )
               ],
             ),
@@ -200,12 +164,9 @@ class AchievementWidgetFlat extends AchievementWidget {
 
     return Column(
       children: [
-        UiManager.getText(
+        CustomTextWidget(
           text: achievement.name,
           size: uiManager.blockSizeVertical * 3,
-          strokeWidth: uiManager.blockSizeVertical * 0,
-          fillColor: whiteColor,
-          strokeColor: whiteColor,
         ),
         SizedBox(
           height: uiManager.blockSizeVertical * 1,
@@ -213,44 +174,22 @@ class AchievementWidgetFlat extends AchievementWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            UiManager.getText(
+            CustomTextWidget(
               text: achievement.description,
               size: uiManager.blockSizeVertical * 2,
-              strokeWidth: uiManager.blockSizeVertical * 0,
-              strokeColor: whiteColor,
-              fillColor: whiteColor,
             ),
             SizedBox(
               width: uiManager.blockSizeHorizontal * 4,
             ),
-            UiManager.getButton(
-              label: UiManager.getText(
+            CustomButtonWidget(
+              label: CustomTextWidget(
                 text: more_label,
                 size: uiManager.blockSizeVertical * 2,
                 strokeWidth: uiManager.blockSizeVertical * 1,
-                strokeColor: blueColor,
-                fillColor: whiteColor,
               ),
               width: uiManager.blockSizeHorizontal * 25,
               height: uiManager.blockSizeVertical * 4,
-              color: yellowColor,
-              cornerRaidus: 10,
-              onTap: () {
-                if (achievement.unlocked) {
-                  Navigator.pushNamed(
-                    context,
-                    '/detailed_achievement_screen',
-                    arguments: achievement,
-                  );
-                } else {
-                  Fluttertoast.showToast(
-                    msg: locked_achievement,
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 1,
-                  );
-                }
-              },
+              onTap: () => onMoreTapped(),
             )
           ],
         ),

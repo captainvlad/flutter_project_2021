@@ -1,29 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sequel/blocs/statistics_bloc.dart';
-import 'package:sequel/general_models/achievement.dart';
-import 'package:sequel/managers/achievements_manager.dart';
+import 'package:sequel/blocs/stats_bloc.dart';
 import 'package:sequel/res/values/colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/managers/ui_manager.dart';
+import 'package:sequel/general_models/achievement.dart';
+import 'package:sequel/managers/navigation_manager.dart';
+import 'package:sequel/managers/achievements_manager.dart';
+import 'package:sequel/res/widgets/button_widget.dart';
+import 'package:sequel/res/widgets/card_widget.dart';
+import 'package:sequel/res/widgets/text_widget.dart';
 
 class StatsScreen extends StatelessWidget {
   const StatsScreen({Key? key}) : super(key: key);
 
+  Future allAchievementsTapped() async {
+    List<Achievement> achievements =
+        await AchievementsManager().getAchievementsCasted();
+
+    NavigationManager.pushNamed(
+        '/achievements_screen', {'achievements': achievements});
+  }
+
   @override
   Widget build(BuildContext context) {
-    StatisticsBloc _stBloc = BlocProvider.of<StatisticsBloc>(context);
-    UiManager uiManager = UiManager(context);
     bool screenInitialized = false;
+    UiManager uiManager = UiManager(context);
+    StatsBloc _stBloc = BlocProvider.of<StatsBloc>(context);
 
     return Scaffold(
       body: SafeArea(
-        child: BlocBuilder<StatisticsBloc, StatisticsState>(
+        child: BlocBuilder<StatsBloc, StatsState>(
           builder: (context, state) {
             if (!screenInitialized) {
-              _stBloc.add(StatisticsEvent.update);
               screenInitialized = true;
-              return SizedBox.shrink();
+              _stBloc.add(StatsEvent.update);
+              return const SizedBox.shrink();
             }
 
             return Column(
@@ -33,7 +45,7 @@ class StatsScreen extends StatelessWidget {
                   height: uiManager.blockSizeVertical * 2,
                   width: double.infinity,
                 ),
-                UiManager.getText(
+                CustomTextWidget(
                   text: title,
                   size: uiManager.blockSizeVertical * 6,
                   strokeWidth: uiManager.blockSizeVertical * 1,
@@ -47,28 +59,21 @@ class StatsScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    UiManager.getText(
+                    CustomTextWidget(
                       text: play_time,
                       size: uiManager.blockSizeHorizontal * 4,
-                      strokeWidth: uiManager.blockSizeHorizontal * 0,
-                      fillColor: whiteColor,
-                      strokeColor: whiteColor,
                     ),
                     SizedBox(
                       width: uiManager.blockSizeVertical * 8,
                     ),
-                    UiManager.getCard(
-                      label: UiManager.getText(
+                    CustomCardWidget(
+                      label: CustomTextWidget(
                         text: "${state.totalPlayedMinutes}",
                         size: uiManager.blockSizeHorizontal * 4,
                         strokeWidth: uiManager.blockSizeHorizontal * 2,
-                        fillColor: whiteColor,
-                        strokeColor: blueColor,
                       ),
                       width: uiManager.blockSizeHorizontal * 35,
                       height: uiManager.blockSizeVertical * 4,
-                      color: yellowColor,
-                      cornerRaidus: 10,
                     ),
                   ],
                 ),
@@ -78,28 +83,21 @@ class StatsScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    UiManager.getText(
+                    CustomTextWidget(
                       text: games_played,
                       size: uiManager.blockSizeHorizontal * 4,
-                      strokeWidth: uiManager.blockSizeHorizontal * 0,
-                      fillColor: whiteColor,
-                      strokeColor: whiteColor,
                     ),
                     SizedBox(
                       width: uiManager.blockSizeVertical * 3,
                     ),
-                    UiManager.getCard(
-                      label: UiManager.getText(
+                    CustomCardWidget(
+                      label: CustomTextWidget(
                         text: "${state.totalGamesPlayed}",
                         size: uiManager.blockSizeHorizontal * 4,
                         strokeWidth: uiManager.blockSizeHorizontal * 2,
-                        fillColor: whiteColor,
-                        strokeColor: blueColor,
                       ),
                       width: uiManager.blockSizeHorizontal * 35,
                       height: uiManager.blockSizeVertical * 4,
-                      color: yellowColor,
-                      cornerRaidus: 10,
                     ),
                   ],
                 ),
@@ -109,28 +107,21 @@ class StatsScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    UiManager.getText(
+                    CustomTextWidget(
                       text: average_accuracy_classic,
                       size: uiManager.blockSizeHorizontal * 4,
-                      strokeWidth: uiManager.blockSizeHorizontal * 0,
-                      fillColor: whiteColor,
-                      strokeColor: whiteColor,
                     ),
                     SizedBox(
                       width: uiManager.blockSizeVertical * 6,
                     ),
-                    UiManager.getCard(
-                      label: UiManager.getText(
+                    CustomCardWidget(
+                      label: CustomTextWidget(
                         text: "${state.averageAccuracyCla}%",
                         size: uiManager.blockSizeHorizontal * 4,
                         strokeWidth: uiManager.blockSizeHorizontal * 2,
-                        fillColor: whiteColor,
-                        strokeColor: blueColor,
                       ),
                       width: uiManager.blockSizeHorizontal * 35,
                       height: uiManager.blockSizeVertical * 4,
-                      color: yellowColor,
-                      cornerRaidus: 10,
                     ),
                   ],
                 ),
@@ -140,28 +131,21 @@ class StatsScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    UiManager.getText(
+                    CustomTextWidget(
                       text: average_accuracy_bullet,
                       size: uiManager.blockSizeHorizontal * 4,
-                      strokeWidth: uiManager.blockSizeHorizontal * 0,
-                      fillColor: whiteColor,
-                      strokeColor: whiteColor,
                     ),
                     SizedBox(
                       width: uiManager.blockSizeVertical * 6,
                     ),
-                    UiManager.getCard(
-                      label: UiManager.getText(
+                    CustomCardWidget(
+                      label: CustomTextWidget(
                         text: "${state.averageAccuracyBul}%",
                         size: uiManager.blockSizeHorizontal * 4,
                         strokeWidth: uiManager.blockSizeHorizontal * 2,
-                        fillColor: whiteColor,
-                        strokeColor: blueColor,
                       ),
                       width: uiManager.blockSizeHorizontal * 35,
                       height: uiManager.blockSizeVertical * 4,
-                      color: yellowColor,
-                      cornerRaidus: 10,
                     ),
                   ],
                 ),
@@ -171,37 +155,30 @@ class StatsScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    UiManager.getText(
+                    CustomTextWidget(
                       text: achievements,
                       size: uiManager.blockSizeHorizontal * 4,
-                      strokeWidth: uiManager.blockSizeHorizontal * 0,
-                      fillColor: whiteColor,
-                      strokeColor: whiteColor,
                     ),
                     SizedBox(
                       width: uiManager.blockSizeVertical * 10,
                     ),
-                    UiManager.getCard(
-                      label: UiManager.getText(
+                    CustomCardWidget(
+                      label: CustomTextWidget(
                         text:
                             "${state.achievementsNumber}/${AchievementsManager.standardAchievements.length}",
                         size: uiManager.blockSizeHorizontal * 4,
                         strokeWidth: uiManager.blockSizeHorizontal * 2,
-                        fillColor: whiteColor,
-                        strokeColor: blueColor,
                       ),
                       width: uiManager.blockSizeHorizontal * 35,
                       height: uiManager.blockSizeVertical * 4,
-                      color: yellowColor,
-                      cornerRaidus: 10,
                     ),
                   ],
                 ),
                 SizedBox(
                   height: uiManager.blockSizeVertical * 3,
                 ),
-                UiManager.getButton(
-                  label: UiManager.getText(
+                CustomButtonWidget(
+                  label: CustomTextWidget(
                     text: all_achievements,
                     size: uiManager.blockSizeHorizontal * 5,
                     strokeWidth: uiManager.blockSizeHorizontal * 2,
@@ -209,26 +186,15 @@ class StatsScreen extends StatelessWidget {
                   ),
                   width: uiManager.blockSizeHorizontal * 80,
                   height: uiManager.blockSizeVertical * 6,
-                  color: yellowColor,
-                  cornerRaidus: 10.0,
                   onTap: () async {
-                    List<Achievement> la =
-                        await AchievementsManager().getAchievementsCasted();
-
-                    Navigator.pushNamed(
-                      context,
-                      '/achievements_screen',
-                      arguments: {
-                        'achievements': la,
-                      },
-                    );
+                    await allAchievementsTapped();
                   },
                 ),
                 SizedBox(
                   height: uiManager.blockSizeVertical * 2,
                 ),
-                UiManager.getButton(
-                  label: UiManager.getText(
+                CustomButtonWidget(
+                  label: CustomTextWidget(
                     text: reset,
                     size: uiManager.blockSizeHorizontal * 5,
                     strokeWidth: uiManager.blockSizeHorizontal * 2,
@@ -236,19 +202,15 @@ class StatsScreen extends StatelessWidget {
                   ),
                   width: uiManager.blockSizeHorizontal * 80,
                   height: uiManager.blockSizeVertical * 6,
-                  color: yellowColor,
-                  cornerRaidus: 10.0,
                   onTap: () async {
-                    // AAADIP remove to utilities then
-                    print("RESET BUTTON PRESSED");
-                    _stBloc.add(StatisticsEvent.reset);
+                    _stBloc.add(StatsEvent.reset);
                   },
                 ),
                 SizedBox(
                   height: uiManager.blockSizeVertical * 2,
                 ),
-                UiManager.getButton(
-                  label: UiManager.getText(
+                CustomButtonWidget(
+                  label: CustomTextWidget(
                     text: update,
                     size: uiManager.blockSizeHorizontal * 5,
                     strokeWidth: uiManager.blockSizeHorizontal * 2,
@@ -256,10 +218,8 @@ class StatsScreen extends StatelessWidget {
                   ),
                   width: uiManager.blockSizeHorizontal * 80,
                   height: uiManager.blockSizeVertical * 6,
-                  color: yellowColor,
-                  cornerRaidus: 10.0,
                   onTap: () {
-                    _stBloc.add(StatisticsEvent.update);
+                    _stBloc.add(StatsEvent.update);
                   },
                 ),
               ],

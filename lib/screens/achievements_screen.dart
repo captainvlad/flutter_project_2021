@@ -4,6 +4,7 @@ import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/managers/ui_manager.dart';
 import 'package:sequel/res/widgets/achievement_widgets.dart';
+import 'package:sequel/res/widgets/text_widget.dart';
 
 class AchievementsScreen extends StatelessWidget {
   const AchievementsScreen({Key? key}) : super(key: key);
@@ -26,7 +27,7 @@ class AchievementsScreen extends StatelessWidget {
                 height: uiManager.blockSizeVertical * 2,
                 width: double.infinity,
               ),
-              UiManager.getText(
+              CustomTextWidget(
                 text: title,
                 size: uiManager.blockSizeVertical * 6,
                 strokeWidth: uiManager.blockSizeVertical * 1,
