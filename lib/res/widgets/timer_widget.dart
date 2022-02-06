@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sequel/blocs/timer_bloc.dart';
 import 'package:sequel/managers/ui_manager.dart';
 import 'package:sequel/managers/utility_manager.dart';
-import 'package:sequel/res/values/colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sequel/res/widgets/text_widget.dart';
 

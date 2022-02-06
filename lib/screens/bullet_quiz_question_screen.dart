@@ -12,8 +12,7 @@ import 'package:sequel/res/values/colors.dart';
 import 'package:sequel/res/values/strings.dart';
 import 'package:sequel/res/widgets/button_widget.dart';
 import 'package:sequel/res/widgets/text_widget.dart';
-
-import 'bullet_quiz_timer.dart';
+import 'package:sequel/res/widgets/timer_widget.dart';
 
 class BulletQuizQuestionScreen extends StatelessWidget {
   const BulletQuizQuestionScreen({Key? key}) : super(key: key);
